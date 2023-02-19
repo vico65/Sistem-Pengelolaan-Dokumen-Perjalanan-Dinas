@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title><%= title %></title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Iceland&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="img/logo.png" />
+    <link rel="stylesheet" href="style/output.css">
+</head>
+<body class="bg-[#AA7B28] h-full w-full ">
+
+<div class="sm:shadow-xl container m-auto h-screen sm:h-fit max-w-3xl sm:py-5 sm:px-4 py-3 px-2 sm:my-20 bg-white dark:bg-slate-800 rounded-md">
+    <header class="flex gap-2 mb-20 sm:mb-4 justify-between">
+        <section class="">
+            <h1 class="h-fit my-auto font-iceland text-2xl font-light  text-[#67460B] " >Login</h1>
+            <div class="w-20 h-0.5 bg-[#67460B]"></div>
+            <p class="text-[#67460B] font-montserrat mt-1 font-normal"> Welcome back! please enter your details.</p>
+        </section>
+    </header>
+
+    <div class="grid sm:grid-cols-2 gap-2">
+        <section class="w-fit place-self-center mb-2">
+            <div class="w-fit mx-auto sm:mx-0 mb-3 px-5">
+                <h2 class="text-slate-900 font-bold text-2xl font-inter dark:text-slate-300">Selamat Datang</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-xs font-light font-inter text-center sm:text-left">Silahkan login terlebih dahulu</p>
+            </div>
+            <div class="max-w-lg mx-auto px-5 py-2">
+                <form action="">
+                    <div class="mb-2">
+                        <label for="username" class="text-slate-900  font-thin">
+                            <span class="text-slate-900 font-medium dark:font-normal  dark:text-slate-500">Username</span>
+                            <input type="text" id="username"
+                                   placeholder="Masukan username / email" class="w-full px-3 py-2 border rounded-lg border-slate-200  placeholder:text-slate-300
+                                focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500 shadow-md
+                                dark:bg-slate-800 dark:border-slate-600
+                                dark:placeholder:text-slate-500"  autofocus>
+                        </label>
+                    </div>
+                    <div class="mb-2">
+                        <label for="password" class="text-slate-900 font-thin ">
+                            <span class="text-slate-900 font-medium dark:font-normal  dark:text-slate-500">Password</span>
+                            <div class="shadow-md border rounded-md border-slate-200 flex dark:border-slate-600" id="container_input_password">
+                                <input type="password" id="password_input" placeholder="Masukan password" class="w-full px-3 py-2  border-no  placeholder:text-slate-300
+                                    rounded-md focus:outline-none dark:bg-slate-800
+                                    dark:placeholder:text-slate-500" >
+                                <button role="button" id="button_show_password">
+                                    <i class="bi bi-eye p-2 text-lg text-yellow-500 dark:text-slate-500" id="icon_mata"></i>
+                                </button>
+
+                            </div>
+                        </label>
+                    </div>
+                    <div>
+                        <span class="text-slate-900 font-medium dark:font-normal dark:text-slate-500">Program Studi</span>
+                        <div><select class="border py-2 px-2 w-full focus:outline-none focus:ring-1 rounded-md focus:ring-yellow-500 focus:border-yellow-500 shadow-md dark:bg-slate-800 dark:border-slate-600 dark:text-slate-500 ">
+                                <option>Teknik Informatika</option>
+                                <option>Teknik Informatika (Bilingual)</option>
+                                <option>Sistem Komputer</option>
+                                <option>Sistem Informasi</option>
+                                <option>Teknik Komputer</option>
+                                <option>Manajemen Informatika</option>
+                                <option>Komputerisasi Akuntansi</option>
+                                <option>Teknik Komputer (Peminatan Jaringan)</option>
+                                <option>Sistem Informasi (Bilingual)</option>
+                                <option>Sistem Informasi (S1 Kelas Profesional)</option>
+                                <option>Sistem Komputer (S1 Kelas Profesional)</option>
+                                <option>Sistem Komputer (Kampus Palembang)</option>
+                                <option>Magister Ilmu Komputer (S2)</option>
+                            </select></div>
+                    </div>
+                </form>
+            </div>
+            <button type="button" class="border py-2 px-6 mx-auto font-semibold block bg-yellow-300 shadow-lg border-slate-300 rounded-lg mt-3 hover:bg-yellow-500 dark:bg-blue-900 dark:border-none dark:text-slate-400"><a href="home.html">Login</a></button>
+        </section>
+
+        <section>
+            <img src="img/logo.png" alt="dprd" class="rounded-xl mx-auto my-auto w-5/6 sm:w-fi dark:brightness-75">
+        </section>
+
+    </div>
+
+    <footer class="font-thin text-xs dark:text-slate-500 text-slate-300 mx-auto w-fit sm:relative sm:bottom-0 sm:mt-4 absolute left-0.5 right-0.5 bottom-2">
+        Universitas Sriwijaya, Indralaya OI, Sumatera Selatan © 2008
+    </footer>
+</div>
+
+
+
+
+
+</body>
+</html>
