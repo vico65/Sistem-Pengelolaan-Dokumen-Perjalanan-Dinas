@@ -4,9 +4,6 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      colors: {
-        bgLogin : '#AA7B28'
-      },
       fontFamily: {
         iceland : ['Iceland'],
         montserrat: ['Montserrat']

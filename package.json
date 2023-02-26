@@ -6,6 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tail": "npx tailwindcss -i ./public/style/input.css -o ./public/style/output.css --watch"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,9 +18,7 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "express-validator": "^6.15.0",
-    "mongoose": "^6.9.2",
-    "nodemon": "^2.0.20",
-    "validator": "^13.9.0"
+    "mongoose": "^6.9.2"
   },
   "devDependencies": {
     "tailwindcss": "^3.2.7"
