@@ -10,7 +10,7 @@ import flash from 'connect-flash'
 
 import {connect} from "mongoose"
 
-connect('mongodb://localhost/belajar-mongo', {
+connect('mongodb://localhost:27017/sistem-pengelolaan-dokumen-perjalanan-dinas', {
    useNewUrlParser: true, 
    useUnifiedTopology: true
 }).then(() => console.log('Connected!'));
@@ -42,12 +42,17 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     res.render('login', {
         title: 'login',
-        msg : req.flash('msg')
+        errors : req.flash('errors')
     })
 })
 
+// app.get('/coba', async (req, res) => {
+//     const coba = await Employee.find()
+//     res.send(coba)
+// })
+
 app.post('/login', [
-    check('nip')
+    body('nip')
         .notEmpty().withMessage('NIP must not be empty').bail()
         .isLength({min : 8}).withMessage('NIP length must be 8').bail()
         .isInt().withMessage('NIP length must be number').bail()
@@ -56,10 +61,17 @@ app.post('/login', [
             console.log(employee)
             if (employee.length == 0) throw new Error('NIP not found in databases')
             return true
-        }).bail(),
-    check('pin')
+        }),
+    body('pin')
         .notEmpty().withMessage('PIN must not be empty').bail()
         .isLength({min : 6}).withMessage('PIN length must be 8').bail()
+        .isInt().withMessage('PIN length must be number').bail()
+        .custom(async (value, {req}) => {
+            const employee = await Employee.find({nip : req.body.nip, pin : value})
+            console.log(employee)
+            if (employee.length == 0 ) throw new Error('NIP and PIN not match, try again ')
+            return true
+        })
     // body('nip').custom(async (value) => {
     //     const employee = await Employee.find({nip: value})
     //     if (employee.length == 0) throw new Error("Nip not found")
@@ -73,8 +85,7 @@ app.post('/login', [
 ], (req, res) => {
     const errors = validationResult(req)
     if(!errors.isEmpty()) {
-        req.flash('msg', errors.array())
-        console.log(errors.array())
+        req.flash('errors', errors.array())
         res.redirect('/login')
         // res.send(errors.array())
     }else {

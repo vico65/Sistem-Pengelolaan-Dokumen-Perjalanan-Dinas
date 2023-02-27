@@ -47,17 +47,22 @@
                         Welcome back! please enter your details.
                     </p>
                 </div>
-                <% if (msg) { %>
-                    <% msg.forEach(e => { %>
-                     <div class="max-w-lg mx-auto bg-red-200 p-2 text-sans text-red-600 dark:bg-slate-900 text-xs sm:text-sm shadow-md">
+
+                <% if (typeof errors != 'undefined') { %>
+                
+
+                    <% errors.forEach(e => { %>
+                    
+                    <div class="max-w-lg mx-auto bg-red-200 p-1 text-sans text-red-600 text-sm shadow-md">
                         <p class="font-medium"><i class="bi bi-exclamation-triangle-fill"></i>
                             <%= e.msg %>
                         </p>
                     </div>
-                    <% }) %>
                     
-                <% } %>
+                    <% }) %>
                 
+                <% } %>
+
                 <div class="max-w-lg mx-auto px-4 py-2">
                     <form method="post" action="/login">
                         <div class="mb-4">
@@ -76,7 +81,9 @@
                             </label>
                         </div>
                         <div class="flex justify-end">
-                            <a href="" class="btn font-montserrat font-bold text-xs text-[#67460B] hover:text-yellow-700">Forgot Password?</a>
+                            <a href=""
+                                class="btn font-montserrat font-bold text-xs text-[#67460B] hover:text-yellow-700">Forgot
+                                Password?</a>
                         </div>
                         <button type="submit"
                             class="w-full py-2 px-6 font-medium bg-[#67460B] shadow-lg rounded-md mt-3 hover:bg-yellow-700 text-white font-montserrat">
@@ -95,7 +102,6 @@
                 <img src="img/logo.png" alt="dprd" class="rounded-xl mx-auto w-72 h-72" />
             </section>
         </div>
-    </div>
 </body>
 
 </html>
