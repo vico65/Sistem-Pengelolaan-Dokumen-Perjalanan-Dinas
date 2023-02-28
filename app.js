@@ -13,16 +13,17 @@ import {connect} from "mongoose"
 connect('mongodb://localhost:27017/sistem-pengelolaan-dokumen-perjalanan-dinas', {
    useNewUrlParser: true, 
    useUnifiedTopology: true
-}).then(() => console.log('Connected!'));
+})
 
 import {Employee} from "./model/employee.js"
 
 app.set('view engine', 'ejs')
 
+const oneDay = 1000 * 60 * 60 * 24;
 app.use(cookieParser('secret'))
 app.use(
     session({
-        cookie: {maxAge:  6000},
+        cookie: { maxAge: oneDay },
         secret: 'secret',
         resave: true,
         saveUninitialized: true
@@ -33,17 +34,29 @@ app.use(flash())
 app.use(express.static('public'))
 app.use(express.urlencoded({extended: true}))
 
+const nipTypeCheck = (req, res) => {
+    console.log(req.session.nip)
+    console.log(req.session.nip == '12345678')
+    if (req.session.nip == '12345678') res.redirect('/')
+    else res.redirect('/home')
+}
+
 app.get('/', (req, res) => {
-    let nik = ""
-    if (typeof req.session.nip === 'undefined') res.redirect('/login')
-    else nik = `<h1>Nik ditemukan</h1>`
+    if (typeof req.session.nip === 'undefined') 
+        res.redirect('/login')
+    else 
+        res.send(`<h1>Nik ditemukan</h1>`)
 })
 
 app.get('/login', (req, res) => {
-    res.render('login', {
-        title: 'login',
-        errors : req.flash('errors')
-    })
+
+    if(typeof req.session.nip !== 'undefined') 
+        nipTypeCheck(req, res)
+    else 
+        res.render('login', {
+            title: 'login',
+            errors : req.flash('errors')
+        })
 })
 
 // app.get('/coba', async (req, res) => {
@@ -58,7 +71,6 @@ app.post('/login', [
         .isInt().withMessage('NIP length must be number').bail()
         .custom(async (value) => {
             const employee = await Employee.find({nip : value})
-            console.log(employee)
             if (employee.length == 0) throw new Error('NIP not found in databases')
             return true
         }),
@@ -68,20 +80,9 @@ app.post('/login', [
         .isInt().withMessage('PIN length must be number').bail()
         .custom(async (value, {req}) => {
             const employee = await Employee.find({nip : req.body.nip, pin : value})
-            console.log(employee)
             if (employee.length == 0 ) throw new Error('NIP and PIN not match, try again ')
             return true
         })
-    // body('nip').custom(async (value) => {
-    //     const employee = await Employee.find({nip: value})
-    //     if (employee.length == 0) throw new Error("Nip not found")
-    //     return true
-    // }),
-    // body('pin').custom( async (value) => {
-    //     const employee = await Employee.find({pin: value})
-    //     if (!employee) throw new Error('Pin ')
-    //     return true
-    // }),
 ], (req, res) => {
     const errors = validationResult(req)
     if(!errors.isEmpty()) {
@@ -89,10 +90,19 @@ app.post('/login', [
         res.redirect('/login')
         // res.send(errors.array())
     }else {
-        res.send(`<h1>ok</h1>`)
+        req.session.nip = req.body.nip
+
+        if (req.body.nip == '12345678') res.redirect('/')
+        else res.redirect('/home')
     }
+})
+
+app.use((req, res) => {
+    req.statusCode = 404
+    res.send('<h1>404</h1>')
 })
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
