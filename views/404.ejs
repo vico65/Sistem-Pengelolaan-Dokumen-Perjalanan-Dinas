@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+   <title><%= title %></title>
+
+   <link rel="preconnect" href="https://fonts.googleapis.com" />
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+   <link href="https://fonts.googleapis.com/css2?family=Iceland&display=swap" rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.1/font/bootstrap-icons.css" />
+   <link rel="shortcut icon" type="image/x-icon" href="img/logo.png" />
+   <link rel="stylesheet" href="style/output.css" />
+</head>
+
+<body class="bg-[#AA7B28] flex h-screen justify-center p-0 items-center w-full overflow-hidden">
+   <div class="w-52 h-52 rounded-full bg-slate-300/60 absolute -bottom-32 right-1/3 shadow-md">
+      <div class="w-[205px] h-[205px] rounded-full bg-[#AA7B28] mx-auto mt-[2px]"></div>
+   </div>
+
+   <div class="w-52 h-52 rounded-full bg-slate-300/60 absolute top-40 -right-24 shadow-md">
+      <div class="w-[205px] h-[205px] rounded-full bg-[#AA7B28] mx-auto mt-[2px]"></div>
+   </div>
+
+   <div class="w-52 h-52 rounded-full bg-slate-300/60 absolute -top-28 left-1/4 shadow-2xl">
+      <div class="w-[205px] h-[205px] rounded-full bg-[#AA7B28] mx-auto mt-[2px]"></div>
+   </div>
+
+   <div class="container h-5/6 w-[90%] rounded-md shadow-xl z-10">
+      
+      <div class="w-full h-full bg-gradient-to-t from-[#FFE500]/75 via-[#FEF072]/75 to-[#FFE500]/75 px-2 py-6 flex flex-col justify-center items-center">
+
+         <img src="img/logo.png" alt="dprd" class="rounded-xl mx-auto w-56 h-56" />
+
+         <div class="w-full flex flex-col items-center font-montserrat ">
+            <h1 class="font-bold text-3xl"><%= statusCode %></h1>
+            <h2 class="font-semibold">Maaf, halaman yang anda cari tidak ditemukan</h2>
+            <p class="text-[#67460B] text-sm">Cek kembali halaman yang ingin anda tuju</p>
+         </div>
+
+      </div>
+
+   </div>
+</body>
+
+</html>

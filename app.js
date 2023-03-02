@@ -35,23 +35,29 @@ app.use(express.static('public'))
 app.use(express.urlencoded({extended: true}))
 
 const nipTypeCheck = (req, res) => {
-    console.log(req.session.nip)
-    console.log(req.session.nip == '12345678')
-    if (req.session.nip == '12345678') res.redirect('/')
-    else res.redirect('/home')
+    const title = 'home'
+
+    if (req.session.nip == '12345678') 
+        res.render('home-admin', {
+            title
+        })
+    else 
+        res.render('home-non-admin', {
+            title
+        })
 }
 
 app.get('/', (req, res) => {
     if (typeof req.session.nip === 'undefined') 
         res.redirect('/login')
     else 
-        res.send(`<h1>Nik ditemukan</h1>`)
+        nipTypeCheck(req, res)
 })
 
 app.get('/login', (req, res) => {
 
     if(typeof req.session.nip !== 'undefined') 
-        nipTypeCheck(req, res)
+        res.redirect('/')
     else 
         res.render('login', {
             title: 'login',
@@ -92,14 +98,16 @@ app.post('/login', [
     }else {
         req.session.nip = req.body.nip
 
-        if (req.body.nip == '12345678') res.redirect('/')
-        else res.redirect('/home')
+        res.redirect('/')
     }
 })
 
 app.use((req, res) => {
     req.statusCode = 404
-    res.send('<h1>404</h1>')
+    res.render('404', {
+        title: "Halaman tidak ditemukan",
+        statusCode: req.statusCode
+    })
 })
 
 app.listen(port, () => {
