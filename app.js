@@ -34,73 +34,79 @@ app.use(flash())
 app.use(express.static('public'))
 app.use(express.urlencoded({extended: true}))
 
-const nipTypeCheck = (req, res) => {
+const nipTypeCheck = async (req, res) => {
     const title = 'home'
+    const employee = await Employee.findOne({nip : req.session.nip})
 
     if (req.session.nip == '12345678') 
         res.render('home-admin', {
-            title
+            title,
+            employee
         })
     else 
         res.render('home-non-admin', {
-            title
+            title,
+            employee
         })
 }
 
 app.get('/', (req, res) => {
+    //gek hapus abis tuh nyalain get post login 
+    req.session.nip = '12345678'
+
     if (typeof req.session.nip === 'undefined') 
         res.redirect('/login')
     else 
         nipTypeCheck(req, res)
 })
 
-app.get('/login', (req, res) => {
-
-    if(typeof req.session.nip !== 'undefined') 
-        res.redirect('/')
-    else 
-        res.render('login', {
-            title: 'login',
-            errors : req.flash('errors')
-        })
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/login');
 })
 
-// app.get('/coba', async (req, res) => {
-//     const coba = await Employee.find()
-//     res.send(coba)
+// app.get('/login', (req, res) => {
+
+//     if(typeof req.session.nip !== 'undefined') 
+//         res.redirect('/')
+//     else 
+//         res.render('login', {
+//             title: 'login',
+//             errors : req.flash('errors')
+//         })
 // })
 
-app.post('/login', [
-    body('nip')
-        .notEmpty().withMessage('NIP must not be empty').bail()
-        .isLength({min : 8}).withMessage('NIP length must be 8').bail()
-        .isInt().withMessage('NIP length must be number').bail()
-        .custom(async (value) => {
-            const employee = await Employee.find({nip : value})
-            if (employee.length == 0) throw new Error('NIP not found in databases')
-            return true
-        }),
-    body('pin')
-        .notEmpty().withMessage('PIN must not be empty').bail()
-        .isLength({min : 6}).withMessage('PIN length must be 8').bail()
-        .isInt().withMessage('PIN length must be number').bail()
-        .custom(async (value, {req}) => {
-            const employee = await Employee.find({nip : req.body.nip, pin : value})
-            if (employee.length == 0 ) throw new Error('NIP and PIN not match, try again ')
-            return true
-        })
-], (req, res) => {
-    const errors = validationResult(req)
-    if(!errors.isEmpty()) {
-        req.flash('errors', errors.array())
-        res.redirect('/login')
-        // res.send(errors.array())
-    }else {
-        req.session.nip = req.body.nip
+// app.post('/login', [
+//     body('nip')
+//         .notEmpty().withMessage('NIP must not be empty').bail()
+//         .isLength({min : 8}).withMessage('NIP length must be 8').bail()
+//         .isInt().withMessage('NIP length must be number').bail()
+//         .custom(async (value) => {
+//             const employee = await Employee.find({nip : value})
+//             if (employee.length == 0) throw new Error('NIP not found in databases')
+//             return true
+//         }),
+//     body('pin')
+//         .notEmpty().withMessage('PIN must not be empty').bail()
+//         .isLength({min : 6}).withMessage('PIN length must be 8').bail()
+//         .isInt().withMessage('PIN length must be number').bail()
+//         .custom(async (value, {req}) => {
+//             const employee = await Employee.find({nip : req.body.nip, pin : value})
+//             if (employee.length == 0 ) throw new Error('NIP and PIN not match, try again ')
+//             return true
+//         })
+// ], (req, res) => {
+//     const errors = validationResult(req)
+//     if(!errors.isEmpty()) {
+//         req.flash('errors', errors.array())
+//         res.redirect('/login')
+//         // res.send(errors.array())
+//     }else {
+//         req.session.nip = req.body.nip
 
-        res.redirect('/')
-    }
-})
+//         res.redirect('/')
+//     }
+// })
 
 app.use((req, res) => {
     req.statusCode = 404
