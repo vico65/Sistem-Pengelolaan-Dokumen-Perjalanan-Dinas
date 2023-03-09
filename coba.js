@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import pkg from 'docx';
+import { text } from "express";
 const {
    Document,
    Packer,
@@ -18,19 +19,35 @@ const {
 // Documents contain sections, you can have multiple sections per document, go here to learn more about sections
 // This simple example will only contain one section
 
-const createTableCell = (strings, columnSpan = 1, rowSpan = 1) => {
-   return new TableCell({
-      margins: {
-         right: 50,
-         left: 50,
-         top: 10, 
-         bottom: 10
-      },
-      rowSpan,
-      columnSpan
-      ,children: createParagraphs(strings),
-      verticalAlign: VerticalAlign.CENTER
-   })
+const createTableCell = (strings,  columnSpan = 1) => {
+   // if (width === true)
+   //    return new TableCell({
+   //       margins: {
+   //          right: 50,
+   //          left: 50,
+   //          top: 10, 
+   //          bottom: 10
+   //       },
+   //       width: {
+   //          size: 1000,
+   //          type: WidthType.DXA,
+   //       },
+   //       columnSpan,
+   //       children: createParagraphs(strings),
+   //       verticalAlign: VerticalAlign.CENTER
+   //    })
+   // else 
+      return new TableCell({
+         margins: {
+            right: 50,
+            left: 50,
+            top: 10, 
+            bottom: 10
+         },
+         columnSpan
+         ,children: createParagraphs(strings),
+         verticalAlign: VerticalAlign.CENTER
+      })
 }
 
 const createParagraph = (string) => {
@@ -136,7 +153,7 @@ const doc = new Document({
                   ]),
                ),
                createTableRow(
-                  createTableCell(7),
+                  createTableCell('7'),
                   createTableCell([
                      'a. Lamanya Perjalanan Dinas ',
                      'b. Tanggal berangkat ',
@@ -207,7 +224,12 @@ const doc = new Document({
                ),
 
             ]
-         })
+         }),
+         new Paragraph('Dikeluarkan di : Palembang'),
+         new Paragraph('Pada tanggal   : September 2022'),
+         new Paragraph('Sekretaris DPRD Provinsi Sumatera Selatan'),
+         new Paragraph('Ramdhan s User'),
+         new Paragraph('Pembina Utama Madya (NIP : 090419204109409)')
       ],
    }],
 });
