@@ -1,6 +1,8 @@
 import * as fs from "fs";
 import pkg from 'docx';
-import { text } from "express";
+import {
+   text
+} from "express";
 const {
    Document,
    Packer,
@@ -13,13 +15,18 @@ const {
    TableCell,
    BorderStyle,
    VerticalAlign,
-   WidthType
+   WidthType,
+   Alignment,
+   AlignmentType,
+   Tab,
+   TabStopPosition,
+   TabStopType, Header,Underline, UnderlineType
 } = pkg;
 
 // Documents contain sections, you can have multiple sections per document, go here to learn more about sections
 // This simple example will only contain one section
 
-const createTableCell = (strings,  columnSpan = 1) => {
+const createTableCell = (strings, columnSpan = 1) => {
    // if (width === true)
    //    return new TableCell({
    //       margins: {
@@ -37,17 +44,17 @@ const createTableCell = (strings,  columnSpan = 1) => {
    //       verticalAlign: VerticalAlign.CENTER
    //    })
    // else 
-      return new TableCell({
-         margins: {
-            right: 50,
-            left: 50,
-            top: 10, 
-            bottom: 10
-         },
-         columnSpan
-         ,children: createParagraphs(strings),
-         verticalAlign: VerticalAlign.CENTER
-      })
+   return new TableCell({
+      margins: {
+         right: 50,
+         left: 50,
+         top: 10,
+         bottom: 10
+      },
+      columnSpan,
+      children: createParagraphs(strings),
+      verticalAlign: VerticalAlign.CENTER
+   })
 }
 
 const createParagraph = (string) => {
@@ -64,13 +71,13 @@ const createParagraph = (string) => {
 const createParagraphs = (strings) => {
    let paragraphs = []
 
-   if(typeof strings === 'object') 
+   if (typeof strings === 'object')
       strings.forEach(string => {
          paragraphs.push(
             createParagraph(string)
          )
       });
-   else 
+   else
       paragraphs.push(
          createParagraph(strings)
       )
@@ -88,6 +95,32 @@ const createTableRow = (cell1, cell2, cell3) => {
 
 const doc = new Document({
    sections: [{
+      headers: {
+         default: new Header({
+            children: [new Paragraph({
+               children: [
+                  new TextRun({
+                     children: ['Surat perintah perjalanan dinas'],
+                     allCaps: true,
+                     size: 28,
+                     bold: true,  
+                     underline : {
+                        type: UnderlineType.SINGLE
+                     }
+                  }),
+               ], alignment: AlignmentType.CENTER
+            }),
+            new Paragraph({
+               children: [
+                  new TextRun({
+                     children: ['Nomor: 090/1317937193193919/SPPD/Setwan/2022'],
+                     allCaps: true,
+                     size: 20
+                  }),
+               ], alignment: AlignmentType.CENTER
+            })],
+         }),
+      },
       properties: {
          column: {
             space: 708,
@@ -225,12 +258,78 @@ const doc = new Document({
 
             ]
          }),
-         new Paragraph('Dikeluarkan di : Palembang'),
-         new Paragraph('Pada tanggal   : September 2022'),
-         new Paragraph('Sekretaris DPRD Provinsi Sumatera Selatan'),
-         new Paragraph('Ramdhan s User'),
-         new Paragraph('Pembina Utama Madya (NIP : 090419204109409)')
-      ],
+         new Paragraph({
+            children: [
+               new TextRun({
+                  children: ["\tDikeluarkan di : Palembang"],
+                  allCaps: true
+               })
+            ],
+            tabStops: [{
+               type: TabStopType.LEFT,
+               position: 1000
+            }],
+            spacing: {
+               before: 200
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  children: ['\tPada tanggal   : September 2022'],
+                  allCaps: true
+               }),
+            ],
+            tabStops: [{
+               type: TabStopType.LEFT,
+               position: 1000
+            }],
+            alignment: AlignmentType.LEFT
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: 'Sekretaris DPRD Provinsi',
+                  allCaps: true
+               }),
+            ],
+            spacing: {
+               before: 100
+            },
+            alignment: AlignmentType.CENTER
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: 'Sumatera Selatan',
+                  allCaps: true
+               }),
+            ],
+            alignment: AlignmentType.CENTER
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: 'Ramadhan M. User',
+                  bold: true,
+                  allCaps: true
+               }),
+            ],
+            spacing: {
+               before: 800
+            },
+            alignment: AlignmentType.CENTER
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: 'Pembina Utama Madya (NIP : 090419204109409)',
+                  bold: true
+               }),
+            ],
+            alignment: AlignmentType.CENTER
+         })
+      ]
    }],
 });
 
