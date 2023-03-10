@@ -123,7 +123,7 @@ const doc = new Document({
       },
       properties: {
          column: {
-            space: 708,
+            space: 200,
             count: 2,
          },
          page: {
@@ -253,7 +253,7 @@ const doc = new Document({
                      'Tiba di      : Kayuagung',
                      'Pada tanggal : September 2022'
                   ], 2),
-                  createTableCell('Telah diperiksa dengan keterangan bahwa perjalanan tersebut diatas benar dilakukan atas perintahnya dan semata-mata untuk kepetningan jabatan dalam waktu yang sesingkat-singkatnya. Pejabat yang memberi perintah')
+                  createTableCell('Telah diperiksa dengan keterangan bahwa perjalanan tersebut diatas benar dilakukan atas perintahnya dan semata-mata untuk kepentingan jabatan dalam waktu yang sesingkat-singkatnya. Pejabat yang memberi perintah')
                ),
 
             ]
