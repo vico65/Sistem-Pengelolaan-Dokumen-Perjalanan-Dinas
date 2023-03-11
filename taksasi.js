@@ -28,7 +28,9 @@ const {
    ImageRun,
    convertMillimetersToTwip,
    TextWrappingSide,
-   TextWrappingType
+   TextWrappingType,
+   LevelFormat,
+   convertInchesToTwip
 } = pkg;
 
 // Documents contain sections, you can have multiple sections per document, go here to learn more about sections
@@ -103,6 +105,28 @@ const createTableRow = (cell1, cell2, cell3) => {
 
 const bla = true
 const doc = new Document({
+   numbering: {
+      config: [{
+         reference: "numbering",
+         levels: [
+
+            {
+               level: 1,
+               format: LevelFormat.DECIMAL,
+               text: "%2.",
+               alignment: AlignmentType.START,
+               style: {
+                  paragraph: {
+                     indent: {
+                        left: convertInchesToTwip(0.5),
+                        hanging: convertInchesToTwip(0.2),
+                     },
+                  },
+               },
+            },
+         ],
+      }, ],
+   },
    sections: [{
       properties: {
          page: {
@@ -123,14 +147,15 @@ const doc = new Document({
                new TextRun({
                   text: "Rincian biaya perjalanan dinas",
                   font: 'Calibri',
-                  bold : true,
-                  size: 30, 
+                  bold: true,
+                  size: 30,
                   allCaps: true,
                   underline: {
                      type: UnderlineType.SINGLE
                   }
                })
-            ], alignment : AlignmentType.CENTER,
+            ],
+            alignment: AlignmentType.CENTER,
             spacing: {
                after: 400
             }
@@ -142,14 +167,14 @@ const doc = new Document({
                   font: 'Calibri'
                }),
                new TextRun({
-                  text: "No. 5235890508250",
+                  text: " No. 5235890508250",
                   font: 'Calibri',
                   underline: {
                      type: UnderlineType.DOTTED
                   }
                }),
                new TextRun({
-                  text: "Tgl",
+                  text: " Tgl ",
                   font: 'Calibri'
                }),
                new TextRun({
@@ -159,7 +184,7 @@ const doc = new Document({
                      type: UnderlineType.DOTTED
                   }
                })
-            ], 
+            ],
             tabStops: [{
                type: TabStopType.LEFT,
                position: 2500
@@ -179,7 +204,7 @@ const doc = new Document({
                      type: UnderlineType.DOTTED
                   }
                })
-            ], 
+            ],
             tabStops: [{
                type: TabStopType.LEFT,
                position: 2500
@@ -199,7 +224,7 @@ const doc = new Document({
                      type: UnderlineType.DOTTED
                   }
                })
-            ], 
+            ],
             tabStops: [{
                type: TabStopType.LEFT,
                position: 2500
@@ -219,7 +244,7 @@ const doc = new Document({
                      type: UnderlineType.DOTTED
                   }
                })
-            ], 
+            ],
             tabStops: [{
                type: TabStopType.LEFT,
                position: 2500
@@ -239,7 +264,7 @@ const doc = new Document({
                      type: UnderlineType.DOTTED
                   }
                })
-            ], 
+            ],
             tabStops: [{
                type: TabStopType.LEFT,
                position: 2500
@@ -259,7 +284,7 @@ const doc = new Document({
                      type: UnderlineType.DOTTED
                   }
                })
-            ], 
+            ],
             tabStops: [{
                type: TabStopType.LEFT,
                position: 2500
@@ -279,7 +304,7 @@ const doc = new Document({
                      type: UnderlineType.DOTTED
                   }
                })
-            ], 
+            ],
             tabStops: [{
                type: TabStopType.LEFT,
                position: 2500
@@ -290,18 +315,602 @@ const doc = new Document({
             children: [
                new TextRun({
                   text: "Ongkos-ongkos yang dimintakan",
-                  allCaps: true, 
-                  size: 20,
+                  allCaps: true,
+                  size: 24,
+                  font: 'Calibri',
                   underline: {
                      type: UnderlineType.SINGLE
                   }
                })
-            ], alignment : AlignmentType.CENTER,
+            ],
+            alignment: AlignmentType.CENTER,
             spacing: {
                before: 400,
                after: 400
             }
          }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Biaya Tiket Pesawat/ PLANE (PP)",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "\tDari ................\tke ................\tRp ................",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            tabStops: [{
+                  type: TabStopType.LEFT,
+                  position: 740,
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: 5000
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: TabStopPosition.MAX
+               }
+            ],
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Biaya Tiket Ferry/ Jet Foil (PP)",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            },
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "\tDari ................\tke ................\tRp ................",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            tabStops: [{
+                  type: TabStopType.LEFT,
+                  position: 740,
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: 5000
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: TabStopPosition.MAX
+               }
+            ],
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Biaya (.............................................)",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            },
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "\tDari ................\tke ................\tRp ................",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            tabStops: [{
+                  type: TabStopType.LEFT,
+                  position: 740,
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: 5000
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: TabStopPosition.MAX
+               }
+            ],
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Biaya Taxi Dari Rumah ke Bandara ke Hotel(PP)\tRp ................",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            tabStops: [{
+               type: TabStopType.LEFT,
+               position: TabStopPosition.MAX
+            }],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            },
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Biaya Transport Darat(PP)",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            },
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "\tDari ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "Palembang",
+                  size: 22,
+                  font: 'Calibri',
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+               new TextRun({
+                  text: "\tke ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "Oki",
+                  font: 'Calibri',
+                  size: 22,
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+               new TextRun({
+                  text: "\tRp ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "410.000",
+                  font: 'Calibri',
+                  size: 22,
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+            ],
+            tabStops: [{
+                  type: TabStopType.LEFT,
+                  position: 740,
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: 5000
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: TabStopPosition.MAX
+               }
+            ]
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Biaya Tol(PP)",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            },
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "\tDari ................\tke ................\tRp ................",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            tabStops: [{
+                  type: TabStopType.LEFT,
+                  position: 740,
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: 5000
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: TabStopPosition.MAX
+               }
+            ],
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Biaya Bahan Bakar Minyak (PP)",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            },
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "\tDari ................\tke ................\tRp ................",
+                  font: 'Calibri',
+                  size: 22
+               })
+            ],
+            tabStops: [{
+                  type: TabStopType.LEFT,
+                  position: 740,
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: 5000
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: TabStopPosition.MAX
+               }
+            ],
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Biaya Representasi\t",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "3 (Hari) ",
+                  font: 'Calibri',
+                  size: 22,
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+               new TextRun({
+                  text: "x  Rp ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "75.000 ",
+                  font: 'Calibri',
+                  size: 22,
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+               new TextRun({
+                  text: "\tRp ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "225.000 ",
+                  font: 'Calibri',
+                  size: 22,
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+            ],
+            tabStops: [{
+                  type: TabStopType.LEFT,
+                  position: 5000
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: TabStopPosition.MAX
+               }
+            ],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            },
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Uang Harian Selama Dalam Provinsi\t",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "3 (Hari) ",
+                  font: 'Calibri',
+                  size: 22,
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+               new TextRun({
+                  text: "x  Rp ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "75.000 ",
+                  font: 'Calibri',
+                  size: 22,
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+               new TextRun({
+                  text: "\tRp ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "225.000 ",
+                  font: 'Calibri',
+                  size: 22,
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+            ],
+            tabStops: [{
+                  type: TabStopType.LEFT,
+                  position: 5000
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: TabStopPosition.MAX
+               }
+            ],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            },
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Uang Harian Selama Luar Provinsi\t",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "........ ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "x  Rp ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "........ ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "\tRp ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "................",
+                  font: 'Calibri',
+                  size: 22
+               }),
+            ],
+            tabStops: [{
+                  type: TabStopType.LEFT,
+                  position: 5000
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: TabStopPosition.MAX
+               }
+            ],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            },
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Uang Penginapan atau Hotel\t",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "3 (Hari) ",
+                  font: 'Calibri',
+                  size: 22,
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+               new TextRun({
+                  text: "x  Rp ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "75.000 ",
+                  font: 'Calibri',
+                  size: 22,
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+               new TextRun({
+                  text: "\tRp ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "225.000 ",
+                  font: 'Calibri',
+                  size: 22,
+                  underline: {
+                     type: UnderlineType.DOTTED
+                  }
+               }),
+            ],
+            tabStops: [{
+                  type: TabStopType.LEFT,
+                  position: 5000
+               },
+               {
+                  type: TabStopType.LEFT,
+                  position: TabStopPosition.MAX
+               }
+            ],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            },
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Biaya Rapid Tes/ Antigen/ Genose\t",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "\tRp ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+               new TextRun({
+                  text: "................ ",
+                  font: 'Calibri',
+                  size: 22
+               }),
+            ],
+            tabStops: [{
+               type: TabStopType.LEFT,
+               position: TabStopPosition.MAX
+            }],
+            numbering: {
+               reference: "numbering",
+               level: 1,
+            },
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Jumlah  ",
+                  size: 22,
+                  font: 'Calibri',
+               }),
+               new TextRun({
+                  text: "Rp 3.245.666",
+                  size: 22,
+                  font: 'Calibri',
+                  underline: {
+                     type: UnderlineType.SINGLE
+                  }
+               })
+            ],
+            alignment: AlignmentType.RIGHT,
+            spacing: {
+               before: 300
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "Palembang, 16 September 2022",
+                  size: 24,
+                  font: 'Calibri'
+               })
+            ], alignment : AlignmentType.RIGHT,
+            spacing: {
+               before: 800
+            }
+         }),
+         new Paragraph({
+            children: [
+               new TextRun({
+                  text: "H. Toyeb Rakembang, S.Ag",
+                  size: 24,
+                  font: 'Calibri'
+               })
+            ], alignment : AlignmentType.RIGHT,
+            spacing: {
+               before: 1200
+            }
+         }),
+
       ]
    }],
 });
