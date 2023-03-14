@@ -39,12 +39,12 @@ const nipTypeCheck = async (req, res) => {
     const employee = await Employee.findOne({nip : req.session.nip})
 
     if (req.session.nip == '12345678') 
-        res.render('home-admin', {
+        res.render('admin/home-admin', {
             title,
             employee
         })
     else 
-        res.render('home-non-admin', {
+        res.render('non-admin/home-non-admin', {
             title,
             employee
         })
@@ -58,6 +58,82 @@ app.get('/', (req, res) => {
         res.redirect('/login')
     else 
         nipTypeCheck(req, res)
+})
+
+app.get('/sppd', async (req, res) => {
+    const employee = await Employee.findOne({nip : req.session.nip})
+
+    const guSppds = [
+        {
+            title: 'Gu 1',
+            jumlah : 0
+        },
+        {
+            title: 'Gu 2',
+            jumlah : 0
+        },
+        {
+            title: 'Gu 3',
+            jumlah : 0
+        },
+        {
+            title: 'Gu 4',
+            jumlah : 0
+        },
+        {
+            title: 'Gu 5',
+            jumlah : 0
+        },
+        {
+            title: 'Gu 6',
+            jumlah : 0
+        },
+        {
+            title: 'Gu 7',
+            jumlah : 0
+        },
+        {
+            title: 'Gu 8',
+            jumlah : 0
+        },
+        {
+            title: 'Gu 9',
+            jumlah : 0
+        },
+        {
+            title: 'Gu 10',
+            jumlah : 0
+        },
+    ]
+
+    res.render('admin/sppd', {
+        title: 'Sppd',
+        employee,
+        guSppds
+    })
+})
+
+app.get('/sppd/add', async(req, res) => {
+    const employee = await Employee.findOne({nip : req.session.nip})
+
+    res.render('admin/tambah-sppd', {
+        title: 'Tambah SPPD',
+        employee
+    })
+})
+
+app.get('/sppd/:gu', async(req, res) => {
+    const employee = await Employee.findOne({nip : req.session.nip})
+
+    res.render('admin/sppd-gu', {
+        title: 'Sppd',
+        gu: req.params.gu,
+        employee
+    })
+})  
+
+app.get('/coba', (req, res) => {
+    return 'Halo'
 })
 
 app.get('/logout', (req, res) => {

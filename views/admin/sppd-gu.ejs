@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title><%= title  %></title>
+
+   <link rel="preconnect" href="https://fonts.googleapis.com" />
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+   <link href="https://fonts.googleapis.com/css2?family=Iceland&display=swap" rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.1/font/bootstrap-icons.css" />
+   <link rel="shortcut icon" type="image/x-icon" href="../img/logo.png" />
+   <link rel="stylesheet" href="../style/output.css" />
+</head>
+
+<body class="dark:bg-slate-800 overflow-x-hidden overflow">
+   <div class="container">
+
+      <!-- navbar -->
+      <header class="w-screen h-14 fixed z-20 dark:bg-slate-900 bg-coklat1 shadow-md flex gap-2 px-3">
+         <button role="button" id="button_list_sidebar" class="sm:hidden">
+            <i id="icon_list_sidebar" class="bi bi-list text-3xl self-center dark:text-slate-300"></i>
+         </button>
+
+         <div class="flex gap-2">
+            <img src="../img/logo.png" alt="logo_dprd" class="w-9 h-9 self-center dark:hidden" />
+            <h1
+               class="h-fit font-inter font-semibold self-center text-slate-100 dark:font-semibold dark:text-slate-300">
+               DPRD Sumsel
+               <!-- Akademik <span class="text-yellow-500 dark:text-sky-500">Unsri</span> -->
+            </h1>
+         </div>
+
+         <div class="flex gap-2 self-center ml-auto mr-4  ">
+            <div class="flex gap-3 self-center text-slate-100 ">
+               <img src="../img/user_image/<%= employee.image %>" alt="profil_image"
+                  class="w-7 h-7 self-center rounded-full dark:hidden" />
+               <p class="font-medium "><%= employee.nama %></p>
+            </div>
+         </div>
+      </header>
+
+      <!-- sidebar -->
+      <nav id="sidebar"
+         class="bg-coklat3 z-10 top-14  dark:bg-slate-900 w-2/5 sm:w-52 shadow-xl h-screen fixed sm:ml-0 transition-all duration-200 -ml-96">
+
+
+         <div class="font-montserrat">
+            <h3 class="font-bold text-lg px-2 pt-4 ">Menu</h3>
+
+            <ul class="text-left text-black dark:text-slate-400 font-normal leading-7 text-sm mt-2 ">
+               <li id=""
+                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4 ">
+                  <a href="/"><i class="bi bi-house-door"></i> Halaman Depan</a>
+
+               </li>
+               <li id="" class=" text-[] font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4">
+                  <a href="/sppd"><i class="bi bi-file-earmark-text-fill"></i> SPPD</a>
+
+               </li>
+               <li id=""
+                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
+                  <i class="bi bi-envelope-paper"></i> Kwitansi
+               </li>
+
+               <li id=""
+                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
+                  <i class="bi bi-envelope-paper"></i> Berkas Perjadin
+               </li>
+               <li id="pointer-log-out"
+                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
+                  <a href="/logout"><i class="bi bi-box-arrow-in-right"></i> Log Out</a>
+
+               </li>
+            </ul>
+
+         </div>
+
+         <div class="text-center text-[9px] dark:text-gray-500 text-gray-400 absolute bottom-3 px-3">
+            <p>DPRD Provinsi Sumatera Selatan </p>
+         </div>
+      </nav>
+
+      <main class="w-screen h-screen bg-slate-50 sm:ml-52">
+         <section id="container_halaman" class=" p-5 w-3/4 relative top-14">
+
+            <h1 class="text-inter font-semibold text-xl mb-4 dark:text-slate-300"><i
+                  class="bi bi-file-earmark-text-fill"> </i>Data Surat Perintah Perjalanan Dinas (SPPD) GU <%= gu %>
+            </h1>
+
+            <div class="bg-white px-3 py-2 w-full h-[460px] shadow-md">
+
+               <div class="flex">
+                  <input type="password" id="pin" name="pin" placeholder="Cari Sppd ..."
+                     class="w-52 px-2 py-1 border rounded-md placeholder:text-slate-400 placeholder:font-light placeholder:font-inter placeholder:text-sm bg-slate-50 focus:outline-none focus:ring-1 focus:ring-coklat2/90  self-center" />
+
+                  <div class="ml-auto font-inter text-sm">
+                     Tampilkan
+                     <select
+                        class="dark:bg-slate-800 dark:border-none bg-slate-50 border py-1 focus:outline-none focus:ring-1 rounded-md focus:ring-coklat2/90 ml-1">
+                        <option>10</option>
+                        <option>20</option>
+                        <option>30</option>
+                     </select>
+                     Data
+                  </div>
+               </div>
+
+               <div id="loader" class=" flex justify-center items-center h-3/4">
+                  <div
+                     class="w-12 h-12 rounded-full border-coklat1 dark:border-sky-700 border-8 border-t-8 border-t-slate-200 animate-spin ">
+                  </div>
+               </div>
+
+               <div class="container-tabel">
+
+               </div>
+
+
+
+               <!-- <table
+                  class="border-collapse text-center table-auto sm:text-sm text-xs text-slate-700 dark:text-slate-400 font-nunito  mb-2  w-full">
+                  <thead class="border-b border-slate-700">
+                     <tr>
+                        <td class="px-2 py-2 font-bold">No.</td>
+                        <td class="font-bold">Gu</td>
+                        <td class="font-bold">Jumlah Data</td>
+                        <td class="font-bold pl-2">Aksi</td>
+                     </tr>
+                  </thead>
+
+                  <tbody>
+
+                  </tbody>
+               </table> -->
+            </div>
+
+         </section>
+      </main>
+   </div>
+</body>
+
+<script>
+   // const pointerLogOut = document.getElementById('pointer-log-out')
+
+   // pointerLogOut.addEventListener('click', () => {
+   //    fetch('/logout')
+   //       .then(console.log(response))
+   // })
+
+   
+
+   fetch('http://localhost:3000/coba')
+      .then(console.log(response))
+</script>
+
+</html>
