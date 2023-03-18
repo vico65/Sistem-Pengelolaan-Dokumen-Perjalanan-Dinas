@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title><%= title  %></title>
+
+   <link rel="preconnect" href="https://fonts.googleapis.com" />
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+   <link href="https://fonts.googleapis.com/css2?family=Iceland&display=swap" rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.1/font/bootstrap-icons.css" />
+   <link rel="shortcut icon" type="image/x-icon" href="../img/logo.png" />
+   <link rel="stylesheet" href="../style/output.css" />
+</head>
+
+<body class="dark:bg-slate-800 overflow-x-hidden overflow">
+   <div class="container ">
+
+      <!-- navbar -->
+      <header class="w-screen  h-14 fixed z-20 dark:bg-slate-900 bg-coklat1 shadow-md flex gap-2 px-3">
+         <button role="button" id="button_list_sidebar" class="sm:hidden">
+            <i id="icon_list_sidebar" class="bi bi-list text-3xl self-center dark:text-slate-300"></i>
+         </button>
+
+         <div class="flex gap-2">
+            <img src="../img/logo.png" alt="logo_dprd" class="w-9 h-9 self-center dark:hidden" />
+            <h1
+               class="h-fit font-inter font-semibold self-center text-slate-100 dark:font-semibold dark:text-slate-300">
+               DPRD Sumsel
+               <!-- Akademik <span class="text-yellow-500 dark:text-sky-500">Unsri</span> -->
+            </h1>
+         </div>
+
+         <div class="flex gap-2 self-center ml-auto mr-4  ">
+            <div class="flex gap-3 self-center text-slate-100 ">
+               <img src="../img/user_image/<%= employee.image %>" alt="profil_image"
+                  class="w-7 h-7 self-center rounded-full dark:hidden" />
+               <p class="font-medium "><%= employee.nama %></p>
+            </div>
+         </div>
+      </header>
+
+      <!-- sidebar -->
+      <nav id="sidebar"
+         class="bg-coklat3 top-14 z-10  dark:bg-slate-900 w-2/5 sm:w-52 shadow-xl h-screen fixed sm:ml-0 transition-all duration-200 -ml-96 ">
+
+
+         <div class="font-montserrat">
+            <h3 class="font-bold text-lg px-2 pt-4 ">Menu</h3>
+
+            <ul class="text-left text-black dark:text-slate-400 font-normal leading-7 text-sm mt-2 ">
+               <li id=""
+                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4 ">
+                  <a href="/"><i class="bi bi-house-door"></i> Halaman Depan</a>
+
+               </li>
+               <li id="" class=" text-coklat4 font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4">
+                  <a href="/sppd"><i class="bi bi-file-earmark-text-fill"></i> SPPD</a>
+
+               </li>
+               <li id=""
+                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
+                  <a href="/kwitansi"><i class="bi bi-envelope-paper"></i> Kwitansi</a>
+               </li>
+
+               <li id=""
+                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
+                  <i class="bi bi-envelope-paper"></i> Berkas Perjadin
+               </li>
+               <li id="pointer-log-out"
+                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
+                  <a href="/logout"><i class="bi bi-box-arrow-in-right"></i> Log Out</a>
+
+               </li>
+            </ul>
+
+         </div>
+
+         <div class="text-center text-[9px] dark:text-gray-500 text-gray-400 absolute bottom-3 px-3">
+            <p>DPRD Provinsi Sumatera Selatan </p>
+         </div>
+      </nav>
+
+      <main class="w-screen h-screen  ">
+         <section id="container_halaman" class=" p-5 relative top-14 sm:ml-52">
+
+            <h1 class="text-inter font-semibold text-xl mb-4 dark:text-slate-300"><i class="bi bi-plus-circle-fill"></i>
+               Tambah Kwitansi</h1>
+
+
+            <% if (typeof msg != 'undefined') { %>
+            <div class="max-w-lg  p-1 text-sans text-green-700 text-sm shadow-md">
+               <p class="font-medium">
+                  <%= msg %>
+               </p>
+            </div>
+            <% } %>
+            <!-- <button type="button" id="button-tambah-sppd"
+               class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-yellow-700 "><i class="bi bi-plus"></i> Tambah
+               Sppd</button> -->
+
+            <form class="bg-white dark:bg-slate-900 w-[98%] p-3 shadow-md h-fit lg:h-3/4 " method="post"
+               action="../sppd/add">
+
+               <h3 class="text-inter font-semibold text-sm sm:text-base mb-3 text-red-900 dark:text-sky-700">
+                  Data Kwitansi</h3>
+               <div class=" grid lg:grid-cols-2 gap-3">
+
+                  <div>
+
+                     <table
+                        class="border-collapse text-left sm:text-sm text-xs text-slate-700  dark:text-slate-400 font-nunito">
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Sppd</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <select
+                                 class="dark:bg-slate-800 dark:border-none border   py-2 focus:outline-none focus:ring-1 rounded-md focus:ring-coklat2 focus:border-coklat2 ml-1"
+                                 name="nomor_sppd" required>
+
+                                 <option value="123">nomor spppd || nama pegawai</option>
+
+                              </select>
+                              <!-- <input id="input-nama-pegawai"
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full hidden" disabled
+                                 type="text" placeholder="Cari pegawai dahulu" name="nama_pegawai">
+                              <input type="hidden" name="id_pegawai" id="input-nip-pegawai">
+                              <button type="button" id="button-input-pegawai"
+                                 class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm hover:bg-yellow-700 flex gap-2"><i
+                                    class="bi bi-search"></i> Cari</button> -->
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Besar Uang</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="besar_uang" required>
+                              <!-- <input id="input-nama-pegawai"
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full hidden" disabled
+                                 type="text" placeholder="Cari pegawai dahulu" name="nama_pegawai">
+                              <input type="hidden" name="id_pegawai" id="input-nip-pegawai">
+                              <button type="button" id="button-input-pegawai"
+                                 class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm hover:bg-yellow-700 flex gap-2"><i
+                                    class="bi bi-search"></i> Cari</button> -->
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Status Perjalanan</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="status_perjalanan">
+                              <!-- <input id="input-nama-pegawai"
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full hidden" disabled
+                                 type="text" placeholder="Cari pegawai dahulu" name="nama_pegawai">
+                              <input type="hidden" name="id_pegawai" id="input-nip-pegawai">
+                              <button type="button" id="button-input-pegawai"
+                                 class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm hover:bg-yellow-700 flex gap-2"><i
+                                    class="bi bi-search"></i> Cari</button> -->
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Tahun Anggaran</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="tahun_anggaran" value="2023" required>
+                              <!-- <input id="input-nama-pegawai"
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full hidden" disabled
+                                 type="text" placeholder="Cari pegawai dahulu" name="nama_pegawai">
+                              <input type="hidden" name="id_pegawai" id="input-nip-pegawai">
+                              <button type="button" id="button-input-pegawai"
+                                 class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm hover:bg-yellow-700 flex gap-2"><i
+                                    class="bi bi-search"></i> Cari</button> -->
+                           </td>
+                        </tr>
+
+                     </table>
+                     <h3 class="text-inter font-semibold text-sm sm:text-base mb-3 text-red-900 dark:text-sky-700 mt-2">
+                        Data Biaya Perjalanan</h3>
+
+                     <table
+                        class="border-collapse text-left sm:text-sm text-xs text-slate-700  dark:text-slate-400 font-nunito">
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Biaya Tiket Pesawat (PP)</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="biaya_tiket_pesawat">
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Biaya Tiket Ferry (PP)</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="biaya_tiket_ferry">
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold flex flex-row gap-2 justify-start items-center">Biaya <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200 w-30 placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none "
+                                 type="text" name="nama_biaya_khusus"></td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="biaya_tiket_khusus">
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Biaya Taxi</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="biaya_taxi">
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Biaya Transportasi Darat</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="biaya_transport_darat">
+                           </td>
+                        </tr>
+                        
+                     </table>
+
+
+
+
+                  </div>
+
+                  <div>
+                     <table
+                        class="border-collapse text-left sm:text-sm text-xs text-slate-700  dark:text-slate-400 font-nunito mb-3">
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Biaya Tol (PP)</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="biaya_tol">
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Biaya BBM</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="biaya_bbm">
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Biaya Representasi per Hari</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="biaya_representasi_per_hari">
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Uang Harian dalam Provinsi</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="uang_harian_dalam_provinsi">
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Uang Harian luar Provinsi</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="uang_harian_luar_provinsi">
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Uang Penginapan</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="uang_penginapan">
+                           </td>
+                        </tr>
+                        <tr class="">
+                           <td class="px-1 py-2 font-bold">Biaya Tes COVID19</td>
+                           <td>:</td>
+                           <td class="pl-1 flex flex-row gap-2 justify-start items-center">
+                              <input
+                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+                                 type="number" name="biaya_tes_covid">
+                           </td>
+                        </tr>
+                        
+
+                     </table>
+
+                     <section class=" w-fit ">
+                        <button type="submit" id="button-tambah-sppd"
+                           class="px-2 py-1 mx-auto bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-yellow-700 "><i
+                              class="bi bi-plus"></i> Tambah dan Buat
+                           Kwitansi </button>
+                     </section>
+                  </div>
+               </div>
+            </form>
+         </section>
+      </main>
+   </div>
+
+   <!-- pop up list pegawai -->
+   <!-- <div id="pop-up-list-pegawai" class="w-80 h-80 bg-white shadow fixed top-[202px] left-96 z-20 border border-slate-300 p-2 rounded-md ">
+      <div class="flex justify-end mb-1">
+         <i id="close-pop-up-button" class="bi bi-x-lg cursor-pointer" ></i>
+      </div>
+      <input id="input-cari-pegawai"
+      class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
+      type="text" placeholder="Cari pegawai" >
+
+      <div class="overflow-auto h-[80%] mt-2 ">
+
+         <div id="loader" class=" justify-center items-center h-3/4 hidden">
+            <div
+               class="w-12 h-12 rounded-full border-coklat1 dark:border-sky-700 border-8 border-t-8 border-t-slate-200 animate-spin ">
+            </div>
+         </div>
+
+         
+         
+      </div>
+
+      
+   </div> -->
+
+</body>
+
+<script>
+   // const containerPegawai = document.getElementById('container-pegawai')
+   // const inputCariPegawai = document.getElementById('input-cari-pegawai')
+   // const loader = document.getElementById('loader')
+   // const containerPegawaiLama = containerPegawai.innerHTML
+   // const closePopUpButton = document.getElementById('close-pop-up-button')
+   // const popUpListPegawai = document.getElementById('pop-up-list-pegawai')
+   // const buttonInputPegawai = document.getElementById('button-input-pegawai')
+   // const listPegawai = document.querySelectorAll('.list-pegawai')
+   // const inputNamaPegawai = document.getElementById('input-nama-pegawai')
+   // const inputNipPegawai = document.getElementById('input-nip-pegawai')
+
+   // listPegawai.forEach((e) => {
+
+   //    e.addEventListener('click', () => {
+   //       inputNamaPegawai.value = e.getAttribute('nama')
+   //       inputNamaPegawai.classList.toggle('hidden')
+   //       inputNipPegawai.value = e.getAttribute('nip')
+   //    })
+
+   // })
+
+   // buttonInputPegawai.addEventListener('click', () => {
+   //    popUpListPegawai.classList.toggle('hidden')
+   // })
+
+   // closePopUpButton.addEventListener('click', () => {
+   //    popUpListPegawai.classList.toggle('hidden')
+   // })
+
+
+   // inputCariPegawai.addEventListener('keyup', () => {
+
+   //    if(inputCariPegawai.value.length != 0) {
+   //    containerPegawai.innerHTML = ""
+   //    containerPegawai.classList.toggle('hidden')
+   //    loader.classList.toggle('flex')
+   //    loader.classList.toggle('hidden')
+
+   //    let container = ""
+   //    fetch('http://localhost:3000/getEmployee/' + inputCariPegawai.value)
+   //       .then(response => response.json())
+   //       .then(response => {
+   //          response.forEach((e) => {
+   //             container += `<div class="flex gap-3 mb-2 font-inter hover:bg-slate-100 cursor-pointer haha list-pegawai">
+   //             <img class="w-10 h-10 shadow-md" src=../img/user_image/` + e.image + ` alt="` + e.nama + `">
+   //             <p class="flex justify-center items-center">` + e.nama + `</p>
+   //          </div>`
+   //          })
+
+   //          if (container.length == 0) 
+   //             containerPegawai.innerHTML = `
+   //             <div class="flex justify-center items-center ">
+   //                <p>Data tidak ditemukan</p>
+   //             </div>`
+   //          else containerPegawai.innerHTML = container
+
+   //          console.log(document.querySelectorAll('.list-pegawai').length)
+
+   //          console.log(document.querySelector('.haha') == listPegawai[0])
+
+   //          containerPegawai.classList.toggle('hidden')
+   //          loader.classList.toggle('flex')
+   //          loader.classList.toggle('hidden')
+   //       })
+   //    } else {
+   //       containerPegawai.innerHTML = containerPegawaiLama
+   //    }
+   // })
+</script>
+
+</html>
