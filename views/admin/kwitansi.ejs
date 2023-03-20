@@ -56,21 +56,32 @@
             <h3 class="font-bold text-lg px-2 pt-4 ">Menu</h3>
 
             <ul class="text-left text-black dark:text-slate-400 font-normal leading-7 text-sm mt-2 ">
-               <li id=""
+               <li
                   class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4 ">
                   <a href="/"><i class="bi bi-house-door"></i> Halaman Depan</a>
 
                </li>
-               <li id="" class=" text-coklat4 font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4">
-                  <a href="/sppd"><i class="bi bi-file-earmark-text-fill"></i> SPPD</a>
+               <li
+                  class=" hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
+                  <a href="/sppd"><i class="bi bi-file-earmark-text"></i> SPPD</a>
 
                </li>
-               <li id=""
-                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
-                  <i class="bi bi-envelope-paper"></i> Kwitansi
+               <li class="text-coklat4 font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4">
+                  <i class="bi bi-envelope-paper-fill"></i> Kwitansi
                </li>
 
-               <li id=""
+               <ul class="text-left ml-8 leading-6 text-xs">
+                  <li class="font-semibold ">
+                     Daftar Kwitansi
+
+                  </li>
+                  <li
+                     class="cursor-pointer hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:p-1">
+                     <a href="/kwitansi/add">Tambah Kwitansi</a>
+                  </li>
+               </ul>
+
+               <li
                   class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
                   <i class="bi bi-envelope-paper"></i> Berkas Perjadin
                </li>
@@ -92,12 +103,13 @@
          <section id="container_halaman" class=" p-5 w-2/3 relative top-14 sm:ml-52">
 
             <h1 class="text-inter font-semibold text-xl mb-4 dark:text-slate-300"><i
-                  class="bi bi-file-earmark-text-fill"> </i>Data Surat Perintah Perjalanan Dinas (SPPD)</h1>
+                  class="bi bi-file-earmark-text-fill"> </i>Data Kwitansi</h1>
 
 
             <button type="button" id="button-tambah-sppd"
-               class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-yellow-700 "><a href="kwitansi/add"><i class="bi bi-plus"></i> Tambah
-               Sppd</a> </button>
+               class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-yellow-700 "><a
+                  href="kwitansi/add"><i class="bi bi-plus"></i> Tambah
+                  Kwitansi</a> </button>
 
 
             <div class="bg-white px-3 py-1 w-2/3 shadow-md">
@@ -115,13 +127,9 @@
                   <tbody>
 
                      <% i = 1 %>
-                     <% guKwitansis.forEach(guKwitansi => { %>
+                     <% guKws.forEach(guKwitansi => { %>
 
-                     <% if (i % 2 == 0) { %>
                      <tr>
-                        <% } else { %>
-                     <tr class="bg-kuning1/30 dark:bg-slate-800">
-                        <% } %>
                         <td class="px-2 py-2"><%= i %></td>
                         <td><%= guKwitansi.title %></td>
                         <td class="pl-2 flex justify-center self-center">
@@ -129,7 +137,7 @@
                               <%= guKwitansi.jumlah %>
                            </div>
                         </td>
-                        <td><a href="sppd/<%= i %>"
+                        <td><a href="kwitansi/<%= i %>"
                               class="py-1 px-2 bg-coklat2 text-white rounded-md hover:bg-yellow-700">Lihat Data</a>
                         </td>
                      </tr>

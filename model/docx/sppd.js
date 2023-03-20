@@ -7,21 +7,14 @@ const {
    Packer,
    Paragraph,
    TextRun,
-   HeadingLevel,
    PageOrientation,
    Table,
    TableRow,
    TableCell,
-   BorderStyle,
    VerticalAlign,
-   WidthType,
-   Alignment,
    AlignmentType,
-   Tab,
-   TabStopPosition,
    TabStopType,
    Header,
-   Underline,
    UnderlineType
 } = pkg;
 

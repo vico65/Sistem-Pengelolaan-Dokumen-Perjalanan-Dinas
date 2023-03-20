@@ -10,7 +10,7 @@ export const Employee = mongoose.model('Employee', {
       required: true
    },
    pin: {
-      type: String,
+      type: Number,
       required: true
    },
    image: {

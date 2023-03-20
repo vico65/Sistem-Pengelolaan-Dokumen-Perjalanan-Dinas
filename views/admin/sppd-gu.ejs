@@ -20,7 +20,7 @@
    <link rel="stylesheet" href="../style/output.css" />
 </head>
 
-<body class="dark:bg-slate-800 overflow-x-hidden overflow">
+<body class="dark:bg-slate-800 overflow-x-hidden ">
    <div class="container">
 
       <!-- navbar -->
@@ -50,8 +50,6 @@
       <!-- sidebar -->
       <nav id="sidebar"
          class="bg-coklat3 z-10 top-14  dark:bg-slate-900 w-2/5 sm:w-52 shadow-xl h-screen fixed sm:ml-0 transition-all duration-200 -ml-96">
-
-
          <div class="font-montserrat">
             <h3 class="font-bold text-lg px-2 pt-4 ">Menu</h3>
 
@@ -63,11 +61,26 @@
                </li>
                <li id="" class=" text-[] font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4">
                   <a href="/sppd"><i class="bi bi-file-earmark-text-fill"></i> SPPD</a>
-
                </li>
+
+               <ul
+                  class="text-left ml-8 leading-6 text-xs">
+                  <li
+                     class="font-semibold ">
+                     Daftar SPPD
+                     
+                  </li>
+                  <li
+                     class="cursor-pointer hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:p-1">
+
+                     <a href="/sppd/add">Tambah SPPD</a>
+                     
+                  </li>
+               </ul>
+
                <li id=""
                   class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
-                  <i class="bi bi-envelope-paper"></i> Kwitansi
+                  <a href="/kwitansi"><i class="bi bi-envelope-paper"></i> Kwitansi</a>
                </li>
 
                <li id=""
@@ -88,77 +101,117 @@
          </div>
       </nav>
 
-      <main class="w-screen h-screen bg-slate-50 sm:ml-52">
-         <section id="container_halaman" class=" p-5 w-3/4 relative top-14">
+      <main class="w-screen h-full  sm:ml-52 p-5 relative top-14">
+         <h1 class="text-inter font-semibold text-xl mb-4 dark:text-slate-300"><i class="bi bi-file-earmark-text-fill">
+            </i>Data Surat Perintah Perjalanan Dinas (SPPD) GU <%= gu %>
+         </h1>
 
-            <h1 class="text-inter font-semibold text-xl mb-4 dark:text-slate-300"><i
-                  class="bi bi-file-earmark-text-fill"> </i>Data Surat Perintah Perjalanan Dinas (SPPD) GU <%= gu %>
-            </h1>
-
-            <div class="bg-white px-3 py-2 w-full h-[460px] shadow-md">
-
-               <div class="flex">
-                  <input type="password" id="pin" name="pin" placeholder="Cari Sppd ..."
-                     class="w-52 px-2 py-1 border rounded-md placeholder:text-slate-400 placeholder:font-light placeholder:font-inter placeholder:text-sm bg-slate-50 focus:outline-none focus:ring-1 focus:ring-coklat2/90  self-center" />
-
-                  <div class="ml-auto font-inter text-sm">
-                     Tampilkan
-                     <select
-                        class="dark:bg-slate-800 dark:border-none bg-slate-50 border py-1 focus:outline-none focus:ring-1 rounded-md focus:ring-coklat2/90 ml-1">
-                        <option>10</option>
-                        <option>20</option>
-                        <option>30</option>
-                     </select>
-                     Data
-                  </div>
-               </div>
-
-               <div id="loader" class=" flex justify-center items-center h-3/4">
+         <section class="bg-white px-3 py-3 w-[80%] shadow-lg">
+            <div>
+               <div id="loader" class="  justify-center hidden items-center h-3/4">
                   <div
                      class="w-12 h-12 rounded-full border-coklat1 dark:border-sky-700 border-8 border-t-8 border-t-slate-200 animate-spin ">
                   </div>
                </div>
 
                <div class="container-tabel">
+                  <table
+                     class="border-collapse text-center table-auto sm:text-sm text-xs text-slate-700 dark:text-slate-400 font-nunito  mb-2  w-full border border-slate-500">
+                     <thead class="bg-kuning1 text-white border ">
+                        <tr>
+                           <td class="px-2 py-2 font-bold border-r border-l border-t border-slate-900">No.</td>
+                           <td class="font-bold border-r border-l border-t border-slate-900">No. SPPD</td>
+                           <td class="font-bold border-r border-l border-t border-slate-900">Nama</td>
+                           <td class="font-bold border-r border-l border-t border-slate-900">Nip</td>
+                           <td class="font-bold pl-2 border-r border-l border-t border-slate-900">Aksi</td>
+                        </tr>
+                     </thead>
 
-               </div>
+                     <tbody class="container-baris-sppd">
+                        <% i = 1 %>
+                        <% sppds.forEach(sppd => { %>
+                        <% if (i % 2 == 1) { %>
+                        <tr class="baris-sppd">
+                           <% } else { %>
+                        <tr class="bg-yellow-50 baris-sppd">
+                           <% } %>
+                           <td class="border-r border-l border-slate-900 py-1"><%= i %></td>
+                           <td class="border-r border-l border-slate-900"><%= sppd.nomor_sppd %></td>
+                           <td class="border-r border-l border-slate-900"><%= employeeNames[i - 1] %></td>
+                           <td class="border-r border-l border-slate-900"><%= sppd.nip %></td>
+                           <td class="border-r border-l border-slate-900 ">
+                              <button type="button"
+                              class="px-2 py-1 mx-auto bg-green-700 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-green-500 "> <a href="/download/sppd/<%= sppd.nomor_sppd %>" ><i class="bi bi-download"></i> Download</a> </button>
+                              <button type="button"
+                              class="px-2 py-1 mx-auto bg-red-700 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-red-500 "> <a href="/delete/sppd/<%= gu %>/<%= sppd.nomor_sppd %>" ><i
+                                 class="bi bi-trash-fill"></i> Hapus</a> </button>
+                           </td>
+                        </tr>
+                        <% i++ %>
+                        <% }) %>
+                     </tbody>
+                  </table>
 
+                  <!-- <div class="font-nunito text-sm flex gap-2 justify-between">
+                     <p>Menampilkan 1 to 10 dari 20 baris</p>
 
+                     <div class="">
+                        <div class="px-2 py-1 bg-kuning2/70 w-fit   flex justify-center items-center">
+                           <p>previous</p>
+                        </div>
+                     </div>
+                  </div>
+               </div> -->
 
-               <!-- <table
-                  class="border-collapse text-center table-auto sm:text-sm text-xs text-slate-700 dark:text-slate-400 font-nunito  mb-2  w-full">
-                  <thead class="border-b border-slate-700">
-                     <tr>
-                        <td class="px-2 py-2 font-bold">No.</td>
-                        <td class="font-bold">Gu</td>
-                        <td class="font-bold">Jumlah Data</td>
-                        <td class="font-bold pl-2">Aksi</td>
-                     </tr>
-                  </thead>
-
-                  <tbody>
-
-                  </tbody>
-               </table> -->
             </div>
-
-         </section>
-      </main>
+   </div>
+   </main>
    </div>
 </body>
 
-<script>
-   // const pointerLogOut = document.getElementById('pointer-log-out')
+<script type="module">
+   // import moment from 'moment'
+   // const barisSppd = document.querySelectorAll('.baris-sppd')
+   // const containerBarisSppd = document.querySelector('.container-baris-sppd')
+   // const selectTampilan = document.querySelector('.select-tampilan')
+   // const opsiKedua = document.querySelector('.opsi-kedua')
 
-   // pointerLogOut.addEventListener('click', () => {
-   //    fetch('/logout')
-   //       .then(console.log(response))
+   // const data = []
+
+   // barisSppd.forEach((val, i) => {
+   //    let listTd = barisSppd[i].querySelectorAll('td')
+   
+   //    let nomor_sppd = listTd[1].innerHTML
+   //    let nama = listTd[2].innerHTML
+   //    let nip = listTd[3].innerHTML
+
+   //    data.push({
+   //       nomor_sppd, nama, nip
+   //    })
    // })
 
-   
+   // const changeTable = (value) => {
+   //    containerBarisSppd.innerHTML = ''
+   //    let temp = ''
 
-   fetch('http://localhost:3000/coba')
-      .then(console.log(response))
+   //    for (let i = 0; i < value; i++) {
+         
+   //       (i % 2 == 0) ? temp += `<tr>` : temp += `<tr class="bg-yellow-50">`
+   //       temp += `<td class="border-r border-l border-slate-900 py-1">`+ (i+1) +`</td>
+   //                         <td class="border-r border-l border-slate-900">` + data[i].nomor_sppd +`</td>
+   //                         <td class="border-r border-l border-slate-900">` + data[i].nama +`</td>
+   //                         <td class="border-r border-l border-slate-900">` + data[i].nip +`</td>
+   //                         <td class="border-r border-l border-slate-900"></td>
+   //                      </tr>`
+   //    }
+
+   //    containerBarisSppd.innerHTML = temp
+   // }
+
+   // selectTampilan.addEventListener('change', () => {
+   //    changeTable(selectTampilan.value)
+   // })
+
 </script>
 
 </html>

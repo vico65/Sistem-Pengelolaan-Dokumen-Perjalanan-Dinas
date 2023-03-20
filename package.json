@@ -22,7 +22,7 @@
     "express-validator": "^6.15.0",
     "moment": "^2.29.4",
     "mongoose": "^6.9.2",
-    "sweetalert2": "^11.7.3"
+    "sweetalert2": "^11.4.8"
   },
   "devDependencies": {
     "tailwindcss": "^3.2.7"

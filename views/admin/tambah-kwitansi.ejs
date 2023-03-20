@@ -56,21 +56,34 @@
             <h3 class="font-bold text-lg px-2 pt-4 ">Menu</h3>
 
             <ul class="text-left text-black dark:text-slate-400 font-normal leading-7 text-sm mt-2 ">
-               <li id=""
+               <li 
                   class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4 ">
                   <a href="/"><i class="bi bi-house-door"></i> Halaman Depan</a>
 
                </li>
-               <li id="" class=" text-coklat4 font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4">
-                  <a href="/sppd"><i class="bi bi-file-earmark-text-fill"></i> SPPD</a>
+               <li class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4 ">
+                  <a href="/sppd"><i class="bi bi-file-earmark-text"></i> SPPD</a>
 
                </li>
-               <li id=""
-                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
-                  <a href="/kwitansi"><i class="bi bi-envelope-paper"></i> Kwitansi</a>
+               <li 
+                  class="text-coklat4 font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4">
+                  <a href="/kwitansi"><i class="bi bi-envelope-paper-fill"></i> Kwitansi</a>
                </li>
 
-               <li id=""
+               <ul
+                  class="text-left ml-8 leading-6 text-xs">
+                  <li
+                     class="cursor-pointer hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:p-1 ">
+                     <a href="/kwitansi">Daftar Kwitansi</a>
+                     
+                  </li>
+                  <li
+                     class="font-semibold">
+                     Tambah Kwitansi
+                  </li>
+               </ul>
+
+               <li 
                   class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
                   <i class="bi bi-envelope-paper"></i> Berkas Perjadin
                </li>
@@ -94,20 +107,21 @@
             <h1 class="text-inter font-semibold text-xl mb-4 dark:text-slate-300"><i class="bi bi-plus-circle-fill"></i>
                Tambah Kwitansi</h1>
 
-
-            <% if (typeof msg != 'undefined') { %>
-            <div class="max-w-lg  p-1 text-sans text-green-700 text-sm shadow-md">
-               <p class="font-medium">
-                  <%= msg %>
-               </p>
-            </div>
-            <% } %>
-            <!-- <button type="button" id="button-tambah-sppd"
-               class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-yellow-700 "><i class="bi bi-plus"></i> Tambah
-               Sppd</button> -->
+               <% if (typeof errors != 'undefined') { %>
+                  <% errors.forEach(e => { %>
+                  
+                  <div class="max-w-lg p-1 text-sans text-red-600 text-sm shadow-md">
+                      <p class="font-medium"><i class="bi bi-exclamation-triangle-fill"></i>
+                          <%= e.msg %>
+                      </p>
+                  </div>
+                  
+                  <% }) %>
+              
+              <% } %>
 
             <form class="bg-white dark:bg-slate-900 w-[98%] p-3 shadow-md h-fit lg:h-3/4 " method="post"
-               action="../sppd/add">
+               action="../kwitansi/add">
 
                <h3 class="text-inter font-semibold text-sm sm:text-base mb-3 text-red-900 dark:text-sky-700">
                   Data Kwitansi</h3>
@@ -125,16 +139,12 @@
                                  class="dark:bg-slate-800 dark:border-none border   py-2 focus:outline-none focus:ring-1 rounded-md focus:ring-coklat2 focus:border-coklat2 ml-1"
                                  name="nomor_sppd" required>
 
-                                 <option value="123">nomor spppd || nama pegawai</option>
-
+                                 <% i = 0 %>
+                                 <% sppds.forEach(sppd => { %>
+                                    <option value="<%= sppd.nomor_sppd %>"> <%= sppd.nomor_sppd %> | <%= employeeNames[i] %></option>
+                                    <% i++ %>
+                                 <% }) %>
                               </select>
-                              <!-- <input id="input-nama-pegawai"
-                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full hidden" disabled
-                                 type="text" placeholder="Cari pegawai dahulu" name="nama_pegawai">
-                              <input type="hidden" name="id_pegawai" id="input-nip-pegawai">
-                              <button type="button" id="button-input-pegawai"
-                                 class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm hover:bg-yellow-700 flex gap-2"><i
-                                    class="bi bi-search"></i> Cari</button> -->
                            </td>
                         </tr>
                         <tr class="">
@@ -143,14 +153,7 @@
                            <td class="pl-1 flex flex-row gap-2 justify-start items-center">
                               <input
                                  class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
-                                 type="number" name="besar_uang" required>
-                              <!-- <input id="input-nama-pegawai"
-                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full hidden" disabled
-                                 type="text" placeholder="Cari pegawai dahulu" name="nama_pegawai">
-                              <input type="hidden" name="id_pegawai" id="input-nip-pegawai">
-                              <button type="button" id="button-input-pegawai"
-                                 class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm hover:bg-yellow-700 flex gap-2"><i
-                                    class="bi bi-search"></i> Cari</button> -->
+                                 type="number" name="besar_uang" value="3624000" required>
                            </td>
                         </tr>
                         <tr class="">
@@ -160,13 +163,6 @@
                               <input
                                  class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
                                  type="number" name="status_perjalanan">
-                              <!-- <input id="input-nama-pegawai"
-                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full hidden" disabled
-                                 type="text" placeholder="Cari pegawai dahulu" name="nama_pegawai">
-                              <input type="hidden" name="id_pegawai" id="input-nip-pegawai">
-                              <button type="button" id="button-input-pegawai"
-                                 class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm hover:bg-yellow-700 flex gap-2"><i
-                                    class="bi bi-search"></i> Cari</button> -->
                            </td>
                         </tr>
                         <tr class="">
@@ -176,13 +172,6 @@
                               <input
                                  class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
                                  type="number" name="tahun_anggaran" value="2023" required>
-                              <!-- <input id="input-nama-pegawai"
-                                 class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full hidden" disabled
-                                 type="text" placeholder="Cari pegawai dahulu" name="nama_pegawai">
-                              <input type="hidden" name="id_pegawai" id="input-nip-pegawai">
-                              <button type="button" id="button-input-pegawai"
-                                 class="px-2 py-1 bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm hover:bg-yellow-700 flex gap-2"><i
-                                    class="bi bi-search"></i> Cari</button> -->
                            </td>
                         </tr>
 
@@ -236,15 +225,10 @@
                            <td class="pl-1 flex flex-row gap-2 justify-start items-center">
                               <input
                                  class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
-                                 type="number" name="biaya_transport_darat">
+                                 type="number" name="biaya_transport_darat" value="410000">
                            </td>
-                        </tr>
-                        
+                        </tr>                      
                      </table>
-
-
-
-
                   </div>
 
                   <div>
@@ -274,7 +258,7 @@
                            <td class="pl-1 flex flex-row gap-2 justify-start items-center">
                               <input
                                  class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
-                                 type="number" name="biaya_representasi_per_hari">
+                                 type="number" name="biaya_representasi_per_hari" value="75000">
                            </td>
                         </tr>
                         <tr class="">
@@ -283,7 +267,7 @@
                            <td class="pl-1 flex flex-row gap-2 justify-start items-center">
                               <input
                                  class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
-                                 type="number" name="uang_harian_dalam_provinsi">
+                                 type="number" name="uang_harian_dalam_provinsi" value="380000">
                            </td>
                         </tr>
                         <tr class="">
@@ -301,7 +285,7 @@
                            <td class="pl-1 flex flex-row gap-2 justify-start items-center">
                               <input
                                  class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
-                                 type="number" name="uang_penginapan">
+                                 type="number" name="uang_penginapan" value="924900">
                            </td>
                         </tr>
                         <tr class="">
@@ -322,6 +306,9 @@
                            class="px-2 py-1 mx-auto bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-yellow-700 "><i
                               class="bi bi-plus"></i> Tambah dan Buat
                            Kwitansi </button>
+                           <button type="submit" id="button-clear-form"
+                           class="px-2 py-1 mx-auto bg-red-700 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-red-500 "><i
+                              class="bi bi-trash-fill"></i> Clear Form </button>
                      </section>
                   </div>
                </div>
@@ -329,102 +316,9 @@
          </section>
       </main>
    </div>
-
-   <!-- pop up list pegawai -->
-   <!-- <div id="pop-up-list-pegawai" class="w-80 h-80 bg-white shadow fixed top-[202px] left-96 z-20 border border-slate-300 p-2 rounded-md ">
-      <div class="flex justify-end mb-1">
-         <i id="close-pop-up-button" class="bi bi-x-lg cursor-pointer" ></i>
-      </div>
-      <input id="input-cari-pegawai"
-      class="ml-1 px-2 py-1 border rounded-md border-slate-200  placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-coklat2 focus:border-coklat2 shadow-sm dark:bg-slate-800 dark:border-none w-full"
-      type="text" placeholder="Cari pegawai" >
-
-      <div class="overflow-auto h-[80%] mt-2 ">
-
-         <div id="loader" class=" justify-center items-center h-3/4 hidden">
-            <div
-               class="w-12 h-12 rounded-full border-coklat1 dark:border-sky-700 border-8 border-t-8 border-t-slate-200 animate-spin ">
-            </div>
-         </div>
-
-         
-         
-      </div>
-
-      
-   </div> -->
-
 </body>
 
 <script>
-   // const containerPegawai = document.getElementById('container-pegawai')
-   // const inputCariPegawai = document.getElementById('input-cari-pegawai')
-   // const loader = document.getElementById('loader')
-   // const containerPegawaiLama = containerPegawai.innerHTML
-   // const closePopUpButton = document.getElementById('close-pop-up-button')
-   // const popUpListPegawai = document.getElementById('pop-up-list-pegawai')
-   // const buttonInputPegawai = document.getElementById('button-input-pegawai')
-   // const listPegawai = document.querySelectorAll('.list-pegawai')
-   // const inputNamaPegawai = document.getElementById('input-nama-pegawai')
-   // const inputNipPegawai = document.getElementById('input-nip-pegawai')
-
-   // listPegawai.forEach((e) => {
-
-   //    e.addEventListener('click', () => {
-   //       inputNamaPegawai.value = e.getAttribute('nama')
-   //       inputNamaPegawai.classList.toggle('hidden')
-   //       inputNipPegawai.value = e.getAttribute('nip')
-   //    })
-
-   // })
-
-   // buttonInputPegawai.addEventListener('click', () => {
-   //    popUpListPegawai.classList.toggle('hidden')
-   // })
-
-   // closePopUpButton.addEventListener('click', () => {
-   //    popUpListPegawai.classList.toggle('hidden')
-   // })
-
-
-   // inputCariPegawai.addEventListener('keyup', () => {
-
-   //    if(inputCariPegawai.value.length != 0) {
-   //    containerPegawai.innerHTML = ""
-   //    containerPegawai.classList.toggle('hidden')
-   //    loader.classList.toggle('flex')
-   //    loader.classList.toggle('hidden')
-
-   //    let container = ""
-   //    fetch('http://localhost:3000/getEmployee/' + inputCariPegawai.value)
-   //       .then(response => response.json())
-   //       .then(response => {
-   //          response.forEach((e) => {
-   //             container += `<div class="flex gap-3 mb-2 font-inter hover:bg-slate-100 cursor-pointer haha list-pegawai">
-   //             <img class="w-10 h-10 shadow-md" src=../img/user_image/` + e.image + ` alt="` + e.nama + `">
-   //             <p class="flex justify-center items-center">` + e.nama + `</p>
-   //          </div>`
-   //          })
-
-   //          if (container.length == 0) 
-   //             containerPegawai.innerHTML = `
-   //             <div class="flex justify-center items-center ">
-   //                <p>Data tidak ditemukan</p>
-   //             </div>`
-   //          else containerPegawai.innerHTML = container
-
-   //          console.log(document.querySelectorAll('.list-pegawai').length)
-
-   //          console.log(document.querySelector('.haha') == listPegawai[0])
-
-   //          containerPegawai.classList.toggle('hidden')
-   //          loader.classList.toggle('flex')
-   //          loader.classList.toggle('hidden')
-   //       })
-   //    } else {
-   //       containerPegawai.innerHTML = containerPegawaiLama
-   //    }
-   // })
 </script>
 
 </html>
