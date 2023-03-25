@@ -55,180 +55,120 @@
 
             <ul class="text-left text-black dark:text-slate-400 font-normal leading-7 text-sm mt-2 ">
                <li
-                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4 ">
-                  <a href="/"><i class="bi bi-house-door"></i> Halaman Depan</a>
+                  class="hover:text-white hover:bg-coklat1 hover:py-1 pl-4 ">
+                  <a href="/" class="inline-block w-full"><i class="bi bi-house-door"></i> Halaman Depan</a>
 
                </li>
-               <li class="  hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
-                  <a href="/sppd"><i class="bi bi-file-earmark-text"></i> SPPD</a>
+               <li class="hover:text-white hover:bg-coklat1 hover:py-1 pl-4 ">
+                  <a href="/sppd" class="inline-block w-full"><i class="bi bi-file-earmark-text"></i> SPPD</a>
                </li>
 
                <li
-                  class="font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4">
-                  <i class="bi bi-envelope-paper-fill"></i> Kwitansi
+                  class="text-coklat2 font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4">
+                   <i class="bi bi-envelope-paper-fill"></i> Kwitansi
                </li>
 
                <ul
-                  class="text-left ml-8 leading-6 text-xs">
+                  class="text-left leading-6 text-xs">
                   <li
-                     class="font-semibold ">
-                     Daftar Kwitansi
+                     class="pl-8 cursor-pointer hover:text-white hover:bg-coklat1 hover:py-1 ">
+                     <a href="/kwitansi">Daftar Kwitansi</a>
                   </li>
+
+                  <ul class="text-left ml-8 leading-6 text-xs text-coklat2">
+                     <li class="pl-8 font-semibold ">
+                        Gu <%= gu %>
+                     </li>
+                  </ul> 
+
                   <li
-                     class="cursor-pointer hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:p-1">
-                     <a href="/kwitansi/add">Tambah Kwitansi</a>
+                     class="cursor-pointer hover:text-white hover:bg-coklat1 hover:py-1 pl-8">
+                     <a href="/kwitansi/add" class="inline-block w-full">Tambah Kwitansi</a>
                   </li>
                </ul>
 
                <li
-                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
-                  <i class="bi bi-envelope-paper"></i> Berkas Perjadin
+                  class="hover:text-white hover:bg-coklat1 hover:py-1 pl-4">
+                  <a href="/berkas" class="inline-block w-full"><i class="bi bi-envelope-paper"></i> Berkas Perjadin</a>
                </li>
-               <li id="pointer-log-out"
-                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
-                  <a href="/logout"><i class="bi bi-box-arrow-in-right"></i> Log Out</a>
-
+               <li 
+                  class="hover:text-white hover:bg-coklat1 hover:py-1 pl-4">
+                  <a href="/logout" class="inline-block w-full"><i class="bi bi-box-arrow-in-right"></i> Log Out</a>
                </li>
             </ul>
 
-         </div>
-
-         <div class="text-center text-[9px] dark:text-gray-500 text-gray-400 absolute bottom-3 px-3">
-            <p>DPRD Provinsi Sumatera Selatan </p>
          </div>
       </nav>
 
       <main class="w-screen h-full  sm:ml-52 p-5 relative top-14">
 
 
-         <h1 class="text-inter font-semibold text-xl mb-4 dark:text-slate-300"><i class="bi bi-file-earmark-text-fill">
-            </i>Data Surat Perintah Perjalanan Dinas (SPPD) GU <%= gu %>
+         <h1 class="text-inter font-semibold text-xl mb-2 dark:text-slate-300"><i class="bi bi-file-earmark-text-fill">
+            </i>Data Kwitansi GU <%= gu %>
          </h1>
+
+         <div class="flex sm:text-sm text-xs font-light text-slate-500 mb-2 gap-2 ">
+            <a href="/kwitansi" class=" first-letter:hover:text-slate-800 hover:font-normal hover:text-coklat2">Daftar Kwitansi
+            </a>
+            <div>/</div>
+            <p class="text-coklat2 font-semibold">Gu <%= gu %></p>
+         </div>
 
          <section class="bg-white px-3 py-3 w-[80%] shadow-lg">
 
-            <!-- <div class="flex mb-5">
-               <input type="password" id="pin" name="pin" placeholder="Cari Sppd ..."
-                  class="w-52 px-2 py-1 border rounded-md placeholder:text-slate-400 placeholder:font-light placeholder:font-inter placeholder:text-sm bg-slate-50 focus:outline-none focus:ring-1 focus:ring-coklat2/90  self-center" />
-
-               <div class="ml-auto font-inter text-sm">
-                  Tampilkan
-                  <select
-                     class="dark:bg-slate-800 dark:border-none bg-slate-50 border py-1 focus:outline-none focus:ring-1 rounded-md focus:ring-coklat2/90 ml-1 select-tampilan" >
-                     <option class="opsi-pertama">20</option>
-                     <option class="opsi-kedua">15</option>
-                     <option class="opsi-ketiga">10</option>
-                  </select>
-                  Data
-               </div>
-            </div> -->
-
-            <div>
-
-               <div id="loader" class="  justify-center hidden items-center h-3/4">
-                  <div
-                     class="w-12 h-12 rounded-full border-coklat1 dark:border-sky-700 border-8 border-t-8 border-t-slate-200 animate-spin ">
+            <% if (kwitansis.length == 0) { %>
+               <div class="w-fit bg-yellow-100 p-2 mb-3 mt-3 text-yellow-600 text-sm shadow-md">
+                  <div class="font-medium flex flex-row gap-2">
+                     <p><i class="bi bi-exclamation-triangle-fill"></i>
+                        Data kosong</p>
                   </div>
                </div>
+            <% } else { %>
 
-               <div class="container-tabel">
-                  <table
-                     class="border-collapse text-center table-auto sm:text-sm text-xs text-slate-700 dark:text-slate-400 font-nunito  mb-2  w-full border border-slate-500">
-                     <thead class="bg-kuning1 text-white border ">
-                        <tr>
-                           <td class="px-2 py-2 font-bold border-r border-l border-t border-slate-900">No.</td>
-                           <td class="font-bold border-r border-l border-t border-slate-900">No. Kwintasi</td>
-                           <td class="font-bold border-r border-l border-t border-slate-900">Nama</td>
-                           <td class="font-bold border-r border-l border-t border-slate-900">Besar Uang</td>
-                           <td class="font-bold pl-2 border-r border-l border-t border-slate-900">Aksi</td>
-                        </tr>
-                     </thead>
+            <table
+               class="border-collapse text-center table-auto sm:text-sm text-xs text-slate-700 dark:text-slate-400 font-nunito  mb-2  w-full border border-slate-500">
+               <thead class="bg-kuning1 text-white border ">
+                  <tr>
+                     <td class="px-2 py-2 font-bold border-r border-l border-t border-slate-900">No.</td>
+                     <td class="font-bold border-r border-l border-t border-slate-900">No. Kwintasi</td>
+                     <td class="font-bold border-r border-l border-t border-slate-900">Nama</td>
+                     <td class="font-bold border-r border-l border-t border-slate-900">Besar Uang</td>
+                     <td class="font-bold pl-2 border-r border-l border-t border-slate-900">Aksi</td>
+                  </tr>
+               </thead>
 
-                     <tbody class="container-baris-sppd">
-                        <% i = 1 %>
-                        <% kwitansis.forEach(kwitansi => { %>
-                        <% if (i % 2 == 1) { %>
-                        <tr>
-                           <% } else { %>
-                        <tr class="bg-yellow-50">
-                           <% } %>
-                           <td class="border-r border-l border-slate-900 py-1"><%= i %></td>
-                           <td class="border-r border-l border-slate-900"><%= kwitansi.nomor_kwitansi %></td>
-                           <td class="border-r border-l border-slate-900"><%= employeeNames[i - 1] %></td>
-                           <td class="border-r border-l border-slate-900">Rp <%= kwitansi.besar_uang %></td>
-                           <td class="border-r border-l border-slate-900">
-                              <button type="button"
-                              class="px-2 py-1 mx-auto bg-green-700 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-green-500 "> <a href="/download/kwitansi/<%= kwitansi.nomor_kwitansi %>" ><i class="bi bi-download"></i> Download</a> </button>
-                              <button type="button"
-                              class="px-2 py-1 mx-auto bg-red-700 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-red-500 "> <a href="/delete/kwitansi/<%= gu %>/<%= kwitansi.nomor_kwitansi %>" ><i
+               <tbody class="container-baris-sppd">
+                  <% i = 1 %>
+                  <% kwitansis.forEach(kwitansi => { %>
+                  <% if (i % 2 == 1) { %>
+                  <tr>
+                     <% } else { %>
+                  <tr class="bg-yellow-50">
+                     <% } %>
+                     <td class="border-r border-l border-slate-900 py-1"><%= i %></td>
+                     <td class="border-r border-l border-slate-900"><%= kwitansi.nomor_kwitansi %></td>
+                     <td class="border-r border-l border-slate-900"><%= employeeNames[i - 1] %></td>
+                     <td class="border-r border-l border-slate-900">Rp <%= kwitansi.besar_uang %></td>
+                     <td class="border-r border-l border-slate-900">
+                        <button type="button"
+                           class="px-2 py-1 mx-auto bg-green-700 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-green-500 ">
+                           <a href="/download/kwitansi/<%= kwitansi.nomor_kwitansi %>"><i class="bi bi-download"></i>
+                              Download</a> </button>
+                        <button type="button"
+                           class="px-2 py-1 mx-auto bg-red-700 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-red-500 ">
+                           <a href="/delete/kwitansi/<%= gu %>/<%= kwitansi.nomor_kwitansi %>"><i
                                  class="bi bi-trash-fill"></i> Hapus</a> </button>
-                           </td>
-                        </tr>
-                        <% i++ %>
-                        <% }) %>
-                     </tbody>
-                  </table>
+                     </td>
+                  </tr>
+                  <% i++ %>
+                  <% }) %>
+               </tbody>
+            </table>
 
-                  <!-- <div class="font-nunito text-sm flex gap-2 justify-between">
-                     <p>Menampilkan 1 to 10 dari 20 baris</p>
-
-                     <div class="">
-                        <div class="px-2 py-1 bg-kuning2/70 w-fit   flex justify-center items-center">
-                           <p>previous</p>
-                        </div>
-                     </div>
-                  </div>
-               </div> -->
-
-            </div>
-   </div>
-   </main>
+            <% } %>
+         </section>
+      </main>
    </div>
 </body>
-
-<script type="module">
-   // import moment from 'moment'
-   // const barisSppd = document.querySelectorAll('.baris-sppd')
-   // const containerBarisSppd = document.querySelector('.container-baris-sppd')
-   // const selectTampilan = document.querySelector('.select-tampilan')
-   // const opsiKedua = document.querySelector('.opsi-kedua')
-
-   // const data = []
-
-   // barisSppd.forEach((val, i) => {
-   //    let listTd = barisSppd[i].querySelectorAll('td')
-   
-   //    let nomor_sppd = listTd[1].innerHTML
-   //    let nama = listTd[2].innerHTML
-   //    let nip = listTd[3].innerHTML
-
-   //    data.push({
-   //       nomor_sppd, nama, nip
-   //    })
-   // })
-
-   // const changeTable = (value) => {
-   //    containerBarisSppd.innerHTML = ''
-   //    let temp = ''
-
-   //    for (let i = 0; i < value; i++) {
-         
-   //       (i % 2 == 0) ? temp += `<tr>` : temp += `<tr class="bg-yellow-50">`
-   //       temp += `<td class="border-r border-l border-slate-900 py-1">`+ (i+1) +`</td>
-   //                         <td class="border-r border-l border-slate-900">` + data[i].nomor_sppd +`</td>
-   //                         <td class="border-r border-l border-slate-900">` + data[i].nama +`</td>
-   //                         <td class="border-r border-l border-slate-900">` + data[i].nip +`</td>
-   //                         <td class="border-r border-l border-slate-900"></td>
-   //                      </tr>`
-   //    }
-
-   //    containerBarisSppd.innerHTML = temp
-   // }
-
-   // selectTampilan.addEventListener('change', () => {
-   //    changeTable(selectTampilan.value)
-   // })
-
-</script>
 
 </html>

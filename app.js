@@ -6,9 +6,7 @@ import {
     validationResult,
     check
 } from 'express-validator'
-
-const app = express()
-const port = 3000
+import multer from "multer";
 
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
@@ -42,9 +40,12 @@ connect('mongodb://localhost:27017/sistem-pengelolaan-dokumen-perjalanan-dinas',
     useUnifiedTopology: true
 })
 
+const app = express()
+const port = 3000
+const oneDay = 1000 * 60 * 60 * 24;
+
 app.set('view engine', 'ejs')
 
-const oneDay = 1000 * 60 * 60 * 24;
 app.use(cookieParser('secret'))
 app.use(
     session({
@@ -63,28 +64,68 @@ app.use(express.urlencoded({
     extended: true
 }))
 
-const nipTypeCheck = async (req, res) => {
-    const title = 'home'
-    const employee = await Employee.findOne({
-        nip: req.session.nip
+const folderNameWithSppdKwitansi = ['Sppd', 'Kwitansi', 'Tiket Pergi', 'Tiket Pulang', 'Boarding Pergi', 'Boarding Pulang', 'Tiket Tol', 'Bukti BBM', 'Bukti Tes Covid', 'Bukti Penginapan', ]
+const folderName = ['Tiket Pergi', 'Tiket Pulang', 'Boarding Pergi', 'Boarding Pulang', 'Tiket Tol', 'Bukti BBM', 'Bukti Tes Covid', 'Bukti Penginapan']
+let folderNameForInputNameWithSppdKwitansi = ['sppd', 'kwitansi', 'tiket_pergi', 'tiket_pulang', 'boarding_pergi', 'boarding_pulang', 'tiket_tol', 'bukti_bbm', 'bukti_tes_covid', 'bukti_penginapan']
+let folderNameForInputName = ['tiket_pergi', 'tiket_pulang', 'boarding_pergi', 'boarding_pulang', 'tiket_tol', 'bukti_bbm', 'bukti_tes_covid', 'bukti_penginapan']
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        let destination = 'C:\\website project\\Sistem-Pengelolaan-Dokumen-Perjalanan-Dinas\\public\\data\\bukti\\'
+
+        folderNameForInputName.forEach((value, index) => {
+            if(file.fieldname == value) destination += folderName[index]
+        })
+        
+        cb(null, destination)
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '.jpg')
+    }
+
+})
+
+const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        const extensionFileFix = ['jpg', 'jpeg']
+
+        let extension = file.originalname.split('.')
+        extension = extension[extension.length - 1]
+
+        if(extensionFileFix.includes(extension)) cb(null, true)
+        else {
+            cb(null, false)
+            cb(new Error('File yang dimasukan harus jpg / jpeg'))
+        }
+    }
+})
+
+const getKwitansisBySppds = async (sppds) => {
+    const kwitansis = []
+
+    for (let i = 0; i < sppds.length; i++) {
+        kwitansis.push(await Kwitansi.findOne({
+            nomor_sppd: sppds[i].nomor_sppd
+        }))
+    }
+
+    return kwitansis
+}
+
+const getDocumentsExistBySppd = (sppd, kwitansi) => {
+
+    const listBukti = [true]
+    
+    if (kwitansi === null) listBukti.push(false)
+    else if (kwitansi !== null) listBukti.push(fs.existsSync('public/data/kwitansi/' + kwitansi.nomor_kwitansi + '.docx'))
+
+    folderName.forEach((name) => {
+        listBukti.push(fs.existsSync('public/data/Bukti/' + name + '/' + sppd.nomor_sppd + '.jpeg') ||
+            fs.existsSync('public/data/Bukti/' + name + '/' + sppd.nomor_sppd + '.jpg'))
     })
 
-    if (req.session.nip == '12345678')
-        res.render('admin/home', {
-            title,
-            employee
-        })
-    else {
-
-        const sppds = await Sppd.find({nip : req.session.nip})
-
-        res.render('non-admin/home', {
-            title,
-            employee,
-            sppds
-        })
-    }
-        
+    return listBukti
 }
 
 const getSppdsPerGu = async () => {
@@ -124,42 +165,51 @@ const getEmployeeNamesPerGuForSppd = async (gu) => {
     let employee = ""
     let employees = []
 
-    for(let i =0; i < sppds[gu - 1].length ; i++) {
-        employee = await Employee.findOne({nip : sppds[gu - 1][i].nip})
+    for (let i = 0; i < sppds[gu - 1].length; i++) {
+        employee = await Employee.findOne({
+            nip: sppds[gu - 1][i].nip
+        })
         employees.push(employee.nama)
     }
-    
+
     return employees
 }
 
-const getEmployeeNamesPerGuForKwitansi = async(gu) => {
-    const kwitansi = await getKwitansisPerGu()
+const getEmployeeNamesPerGuForKwitansi = async (gu) => {
+    let kwitansi = await getKwitansisPerGu()
+    kwitansi = kwitansi[gu - 1]
 
     let sppds = []
 
-    for(let i = 0; i < kwitansi[gu - 1].length; i++) {
-        sppds.push(await Sppd.findOne({nomor_sppd: kwitansi[gu - 1][i]}))
+    for (let i = 0; i < kwitansi.length; i++) {
+        sppds.push(await Sppd.findOne({
+            nomor_sppd: kwitansi[i].nomor_sppd
+        }))
     }
 
-    let employee = ""
+    let employee = null
     let employees = []
 
-    for(let i =0; i < sppds[gu - 1].length ; i++) {
-        employee = await Employee.findOne({nip : sppds[gu - 1][i].nip})
+    for (let i = 0; i < sppds.length; i++) {
+        employee = await Employee.findOne({
+            nip: sppds[i].nip
+        })
         employees.push(employee.nama)
     }
 
     return employees
 }
 
-const getEmployeeNames = async() => {
+const getEmployeeNames = async () => {
     const sppds = await Sppd.find()
 
     let employee = ""
     let employees = []
 
     for (let i = 0; i < sppds.length; i++) {
-        employee = await Employee.findOne({nip : sppds[i].nip})
+        employee = await Employee.findOne({
+            nip: sppds[i].nip
+        })
         employees.push(employee.nama)
     }
 
@@ -167,11 +217,37 @@ const getEmployeeNames = async() => {
 }
 
 //route get untuk halaman utama
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+
+    //gek hapus  77392657
+    
+
     if (typeof req.session.nip === 'undefined')
         res.redirect('/login')
-    else
-        nipTypeCheck(req, res)
+    else {
+        const employee = await Employee.findOne({
+            nip: req.session.nip
+        })
+
+        const sppds = await Sppd.find({
+            nip: req.session.nip
+        })
+
+        const kwitansis = await getKwitansisBySppds(sppds)
+
+        let type = null
+
+        if (req.session.nip == '12345678')  type = 'admin'
+        else type = 'non-admin'
+        
+        res.render('home', {
+            title: 'Beranda',
+            employee,
+            sppds,
+            kwitansis,
+            type
+        })
+    }
 })
 
 //route get untuk halaman sppd
@@ -183,17 +259,17 @@ app.get('/sppd', async (req, res) => {
         const employee = await Employee.findOne({
             nip: req.session.nip
         })
-    
+
         const sppds = await getSppdsPerGu()
         const guSppds = []
-    
+
         sppds.forEach((sppd, index) => {
             guSppds.push({
                 title: `GU ${index + 1}`,
                 jumlah: sppd.length
             })
         })
-    
+
         res.render('admin/sppd', {
             title: 'Sppd',
             employee,
@@ -219,7 +295,7 @@ app.get('/sppd/add', async (req, res) => {
             employee,
             employees
         })
-    }   
+    }
 })
 
 //route post buat tambah data sppd
@@ -322,25 +398,24 @@ app.get('/sppd/:gu', async (req, res) => {
         res.redirect('/login')
     else {
         const employee = await Employee.findOne({
-        nip: req.session.nip
-    })
+            nip: req.session.nip
+        })
 
-    const sppds = await getSppdsPerGu()
-    const employeeNames = await getEmployeeNamesPerGuForSppd(req.params.gu)
+        const sppds = await getSppdsPerGu()
+        const employeeNames = await getEmployeeNamesPerGuForSppd(req.params.gu)
 
-    res.render('admin/sppd-gu', {
-        title: 'Sppd GU ' + req.params.gu,
-        gu: req.params.gu,
-        sppds: sppds[req.params.gu - 1],
-        employee,
-        employeeNames,
-        msg : req.flash('msg')
-    })
+        res.render('admin/sppd-gu', {
+            title: 'Sppd GU ' + req.params.gu,
+            gu: req.params.gu,
+            sppds: sppds[req.params.gu - 1],
+            employee,
+            employeeNames,
+            msg: req.flash('msg')
+        })
     }
 
-    
-}
-)
+
+})
 
 //route get buat menampilkan kwitansi
 app.get('/kwitansi', async (req, res) => {
@@ -348,24 +423,24 @@ app.get('/kwitansi', async (req, res) => {
         res.redirect('/login')
     else {
         const employee = await Employee.findOne({
-        nip: req.session.nip
-    })
-
-    const kwitansis = await getKwitansisPerGu()
-    let gukwitansis = []
-
-    kwitansis.forEach((kwitansi, index) => {
-        gukwitansis.push({
-            title: `GU ${index + 1}`,
-            jumlah: kwitansi.length
+            nip: req.session.nip
         })
-    })
 
-    res.render('admin/kwitansi', {
-        title: 'Kwitansi',
-        employee,
-        guKws : gukwitansis
-    })
+        const kwitansis = await getKwitansisPerGu()
+        let gukwitansis = []
+
+        kwitansis.forEach((kwitansi, index) => {
+            gukwitansis.push({
+                title: `GU ${index + 1}`,
+                jumlah: kwitansi.length
+            })
+        })
+
+        res.render('admin/kwitansi', {
+            title: 'Kwitansi',
+            employee,
+            guKws: gukwitansis
+        })
     }
 })
 
@@ -374,212 +449,298 @@ app.get('/kwitansi/add', async (req, res) => {
     if (typeof req.session.nip === 'undefined')
         res.redirect('/login')
     else {
-         const employee = await Employee.findOne({
-        nip: req.session.nip
-    })
+        const employee = await Employee.findOne({
+            nip: req.session.nip
+        })
 
-    const sppds = await Sppd.find()
-    const employeeNames = await getEmployeeNames()
+        const sppds = await Sppd.find()
+        const employeeNames = await getEmployeeNames()
 
-    res.render('admin/tambah-kwitansi', {
-        title: 'Tambah Kwitansi',
-        employee,
-        employeeNames,
-        sppds,
-        errors : req.flash('errors')
-    })
+        res.render('admin/tambah-kwitansi', {
+            title: 'Tambah Kwitansi',
+            employee,
+            employeeNames,
+            sppds,
+            errors: req.flash('errors')
+        })
     }
-    
-   
+
+
 })
 
 //route post buat proses data kwitansi yang akan ditambahkan
-app.post('/kwitansi/add', 
-    [ body('nomor_sppd')
+app.post('/kwitansi/add',
+    [body('nomor_sppd')
         .custom(async (value) => {
-            const kwitansi = await Kwitansi.find({nomor_sppd : value})
+            const kwitansi = await Kwitansi.find({
+                nomor_sppd: value
+            })
             if (kwitansi.length != 0) throw new Error('Nomor SPPD telah memiliki kwitansi, hapus kwitansi / sppd yang lama')
             return true
         }),
-    body('besar_uang')
+        body('besar_uang')
         .notEmpty().withMessage('Besar uang harus diisi').bail()
         .isInt().withMessage('Besar uang harus berupa angka').bail(),
-    body('tahun_anggaran')
+        body('tahun_anggaran')
         .notEmpty().withMessage('Tahun anggaran harus diisi').bail()
         .isInt().withMessage('Tahun anggaran harus berupa angka').bail()
-        .isLength({min : 4}).withMessage('Tahun anggaran harus 4 digit'),
-], async (req, res) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        //jika error kirim message
-        req.flash('errors', errors.array())
-        res.redirect('/kwitansi/add')
-    } else {
-        //variable
-        const sppd = await Sppd.findOne({nomor_sppd : req.body.nomor_sppd})
+        .isLength({
+            min: 4
+        }).withMessage('Tahun anggaran harus 4 digit'),
+    ], async (req, res) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            //jika error kirim message
+            req.flash('errors', errors.array())
+            res.redirect('/kwitansi/add')
+        } else {
+            //variable
+            const sppd = await Sppd.findOne({
+                nomor_sppd: req.body.nomor_sppd
+            })
 
-        const employee = await Employee.findOne({
-            nip: sppd.nip
-        })
+            const employee = await Employee.findOne({
+                nip: sppd.nip
+            })
 
-        const lastKwitansi = await Kwitansi.findOne().sort({
-            nomor_kwitansi : -1
-        })
+            const lastKwitansi = await Kwitansi.findOne().sort({
+                nomor_kwitansi: -1
+            })
 
-        let nomor_kwitansi  = 20000
+            let nomor_kwitansi = 20000
 
-        //buat sppd
-        if (lastKwitansi != null) nomor_kwitansi  = lastKwitansi.nomor_kwitansi  + 1
+            //buat sppd
+            if (lastKwitansi != null) nomor_kwitansi = lastKwitansi.nomor_kwitansi + 1
 
-        const statusCreateKwitansi = await createKwitansi(nomor_kwitansi ,employee, sppd,  req.body)
+            const statusCreateKwitansi = await createKwitansi(nomor_kwitansi, employee, sppd, req.body)
 
-        //simpan ke database
-        let kwitansi = new Kwitansi({
-            nomor_kwitansi,
-            nomor_sppd : req.body.nomor_sppd,
-            tanggal_dikeluarkan: moment().format('YYYY-MM-DD'),
-            besar_uang : req.body.besar_uang,
-            status_perjalanan : req.body.status_perjalanan,
-            tahun_anggaran: req.body.tahun_anggaran,
-            biaya_tiket_pesawat: req.body.biaya_tiket_pesawat,
-            biaya_tiket_ferry: req.body.biaya_tiket_ferry,
-            nama_biaya_khusus: req.body.nama_tiket_khusus,
-            biaya_tiket_khusus: req.body.biaya_tiket_khusus,
-            biaya_taxi: req.body.biaya_taxi,
-            biaya_transport_darat: req.body.biaya_transport_darat,
-            biaya_tol: req.body.biaya_tol,
-            biaya_bbm: req.body.biaya_bbm,
-            biaya_representasi_per_hari: req.body.biaya_representasi_per_hari,
-            uang_harian_dalam_provinsi: req.body.uang_harian_dalam_provinsi,
-            uang_harian_luar_provinsi: req.body.uang_harian_luar_provinsi,
-            uang_penginapan: req.body.uang_penginapan,
-            biaya_tes_covid: req.body.biaya_tes_covid,
-            status_kwitansi: 'belum ttd'
-        })
+            //simpan ke database
+            let kwitansi = new Kwitansi({
+                nomor_kwitansi,
+                nomor_sppd: req.body.nomor_sppd,
+                tanggal_dikeluarkan: moment().format('YYYY-MM-DD'),
+                besar_uang: req.body.besar_uang,
+                status_perjalanan: req.body.status_perjalanan,
+                tahun_anggaran: req.body.tahun_anggaran,
+                biaya_tiket_pesawat: req.body.biaya_tiket_pesawat,
+                biaya_tiket_ferry: req.body.biaya_tiket_ferry,
+                nama_biaya_khusus: req.body.nama_tiket_khusus,
+                biaya_tiket_khusus: req.body.biaya_tiket_khusus,
+                biaya_taxi: req.body.biaya_taxi,
+                biaya_transport_darat: req.body.biaya_transport_darat,
+                biaya_tol: req.body.biaya_tol,
+                biaya_bbm: req.body.biaya_bbm,
+                biaya_representasi_per_hari: req.body.biaya_representasi_per_hari,
+                uang_harian_dalam_provinsi: req.body.uang_harian_dalam_provinsi,
+                uang_harian_luar_provinsi: req.body.uang_harian_luar_provinsi,
+                uang_penginapan: req.body.uang_penginapan,
+                biaya_tes_covid: req.body.biaya_tes_covid,
+                status_kwitansi: 'belum ttd'
+            })
 
-        kwitansi.save()
+            kwitansi.save()
 
-        if (fs.existsSync('public/data/kwitansi/' + nomor_kwitansi + '.docx')) {
-            res.redirect('/download/kwitansi/' + nomor_kwitansi)
+            if (fs.existsSync('public/data/kwitansi/' + nomor_kwitansi + '.docx')) {
+                res.redirect('/download/kwitansi/' + nomor_kwitansi)
+            }
         }
-    }
-})
+    })
 
 //route get buat menampilkan kwitansi per gu
-app.get('/kwitansi/:gu', async(req, res) => {
+app.get('/kwitansi/:gu', async (req, res) => {
+    
+
     if (typeof req.session.nip === 'undefined')
         res.redirect('/login')
     else {
         const employee = await Employee.findOne({
-        nip: req.session.nip
-    })
+            nip: req.session.nip
+        })
 
-    const kwitansis = await getKwitansisPerGu()
-    const employeeNames = await getEmployeeNamesPerGuForSppd(req.params.gu)
+        const kwitansis = await getKwitansisPerGu()
+        const employeeNames = await getEmployeeNamesPerGuForKwitansi(req.params.gu)
 
-    res.render('admin/kwitansi-gu', {
-        title: 'Kwitansi GU ' + req.params.gu,
-        gu: req.params.gu,
-        kwitansis: kwitansis[req.params.gu - 1],
-        employee,
-        employeeNames
-    })
+        res.render('admin/kwitansi-gu', {
+            title: 'Kwitansi GU ' + req.params.gu,
+            gu: req.params.gu,
+            kwitansis: kwitansis[req.params.gu - 1],
+            employee,
+            employeeNames
+        })
     }
-    
-    
+
+
 })
 
 //route get buat menampilkan berkas perjadin
-app.get('/berkas', async(req, res) => {
+app.get('/berkas', async (req, res) => {
+
     
+
     if (typeof req.session.nip === 'undefined')
         res.redirect('/login')
     else {
         const employee = await Employee.findOne({
-        nip: req.session.nip
-    })
+            nip: req.session.nip
+        })
 
-    const sppds = await Sppd.find()
-    const employees = await getEmployeeNames()
+        const sppds = await Sppd.find()
+        const employees = await getEmployeeNames()
 
-    res.render('admin/berkas', {
-        title: 'Berkas Perjadin',
-        sppds,
-        employee,
-        employees
-    })
+        res.render('admin/berkas', {
+            title: 'Berkas Perjadin',
+            sppds,
+            employee,
+            employees
+        })
     }
 })
 
-//route get buat menampilkan berkas per sppd
-app.get('/berkas/:nomor_sppd', async(req, res) => {
+//route get buat menampilkan detail berkas perjadin
+app.get('/detail/:nomor_sppd', async (req, res) => {
+
+    // req.session.nip = 77392657
     
+
     if (typeof req.session.nip === 'undefined')
         res.redirect('/login')
     else {
         const employee = await Employee.findOne({
-        nip: req.session.nip
-    })
+            nip: req.session.nip
+        })
 
-    const sppd = await Sppd.findOne({nomor_sppd : req.params.nomor_sppd})
+        const sppd = await Sppd.findOne({
+            nomor_sppd: req.params.nomor_sppd
+        })
 
-    const employeeReq = await Employee.findOne({nip : sppd.nip})
+        const kwitansi = await Kwitansi.findOne({
+            nomor_sppd: req.params.nomor_sppd
+        })
 
-    const kwitansi = await Kwitansi.findOne({nomor_sppd : req.params.nomor_sppd})
+        const listBukti = getDocumentsExistBySppd(sppd, kwitansi)
 
-    const listBukti = [true, fs.existsSync('public/data/kwitansi/' + kwitansi.nomor_kwitansi + '.docx')]
-    
-    let folderName = ['Tiket Pergi', 'Tiket Pulang','Boarding Pergi',  'Boarding Pulang', 'Tiket Tol','Bukti BBM', 'Bukti Tes Covid', 'Bukti Penginapan',]
+        const isListBuktiAllTrue = !listBukti.includes(false)
 
-    folderName.forEach((name) => {
-        listBukti.push(fs.existsSync('public/data/Bukti/' + name + '/' + req.params.nomor_sppd + '.jpeg') || 
-            fs.existsSync('public/data/Bukti/' + name + '/' + req.params.nomor_sppd + '.jpg'))
-    })
+        let type = null
 
-    folderName = ['Sppd', 'Kwitansi', 'Tiket Pergi', 'Tiket Pulang','Boarding Pergi',  'Boarding Pulang', 'Tiket Tol','Bukti BBM', 'Bukti Tes Covid', 'Bukti Penginapan',]
+        if (req.session.nip == '12345678')  type = 'admin'
+        else type = 'non-admin'
 
-    res.render('admin/berkas-detail', {
-        title: 'Berkas Perjadin',
-        employee,
-        sppd,
-        kwitansi,
-        employeeReq,
-        listBukti,
-        folderName
-    })
+        const paramSend = {
+            title: 'Detail Berkas',
+            employee,
+            sppd,
+            kwitansi,
+            listBukti,
+            isListBuktiAllTrue,
+            folderName : folderNameWithSppdKwitansi,
+            type,
+            msg : req.flash('msg')
+        }
+        
+        res.render('detail', paramSend)
     }
-
-    
 })
+
+//route get buat menampilkan form upload dokumen
+app.get('/upload/:nomor_sppd', async (req, res) => {
+
+    if (typeof req.session.nip === 'undefined')
+        res.redirect('/login')
+    else {
+        const employee = await Employee.findOne({
+            nip: req.session.nip
+        })
+
+        const sppd = await Sppd.findOne({
+            nomor_sppd: req.params.nomor_sppd
+        })
+
+        const kwitansi = await Kwitansi.findOne({
+            nomor_sppd: req.params.nomor_sppd
+        })
+
+        const listBukti = getDocumentsExistBySppd(sppd, kwitansi)
+        const isListBuktiAllTrue = !listBukti.includes(false)
+
+        let type = null
+
+        if (req.session.nip == '12345678')  type = 'admin'
+        else type = 'non-admin'
+
+        if (req.session.nip == sppd.nip) 
+            res.render('upload', {
+                title: 'Detail',
+                employee,
+                sppd,
+                kwitansi,
+                listBukti,
+                isListBuktiAllTrue,
+                folderName : folderNameWithSppdKwitansi,
+                folderNameForInputName : folderNameForInputNameWithSppdKwitansi,
+                type 
+            })
+        else 
+            res.render('404', {
+                title: "Halaman tidak ditemukan",
+                statusCode: req.statusCode
+            })
+    }
+})
+
+//route post untuk memproses data dari form upload dokumen
+app.post('/upload/:nomor_sppd', 
+    upload.fields([
+        {name : 'tiket_pergi'}, {name : 'tiket_pulang'}, {name: 'boarding_pergi'}, {name: 'boarding_pulang'},
+        {name: 'tiket_tol'}, {name: 'bukti_bbm'}, {name: 'bukti_tes_covid'}, {name: 'bukti_penginapan'}
+    ]), 
+    async (req, res) => {
+        folderName.forEach((value, index) => {
+            if(fs.existsSync('public\\data\\bukti\\'+ value +'\\'+ folderNameForInputName[index] +'.jpg')) 
+                fs.renameSync('public\\data\\bukti\\'+ value +'\\'+ folderNameForInputName[index] +'.jpg', 'public\\data\\bukti\\'+ value +'\\'+ req.params.nomor_sppd +'.jpg')
+        })
+
+        req.flash('msg', [
+            'Dokumen berhasil diupload'
+        ])
+        res.redirect('/detail/' + req.params.nomor_sppd)
+    }
+)
 
 //route get buat download
 app.get('/download/sppd/:nomor_sppd', async (req, res) => {
     res.download('public/data/sppd/' + req.params.nomor_sppd + '.docx')
 })
 
-app.get('/delete/sppd/:gu/:nomor_sppd', async(req, res) => {
-    await Sppd.deleteOne({nomor_sppd : req.params.nomor_sppd})
-    fs.unlinkSync('public/data/sppd/' + req.params.nomor_sppd + '.docx')
-    res.redirect('/sppd/' + req.params.gu)
-})
-
-app.get('/delete/kwitansi/:gu/:nomor_kwitansi', async(req, res) => {
-    await Kwitansi.deleteOne({nomor_kwitansi : req.params.nomor_kwitansi})
-    fs.unlinkSync('public/data/kwitansi/' + req.params.nomor_kwitansi + '.docx')
-    res.redirect('/kwitansi/' + req.params.gu)
-})
 
 app.get('/download/kwitansi/:nomor_kwitansi', async (req, res) => {
     res.download('public/data/kwitansi/' + req.params.nomor_kwitansi + '.docx')
 })
 
-app.get('/download/bukti/:folderName/:nomor_sppd', async(req, res) => {
-    if (fs.existsSync('public/data/Bukti/' + req.params.folderName + '/' + req.params.nomor_sppd + '.jpeg')) 
-        res.download('public/data/Bukti/' + req.params.folderName + '/' + req.params.nomor_sppd + '.jpeg')
+app.get('/download/bukti/:folderName/:nomor_sppd', async (req, res) => {
+    if (fs.existsSync('public/data/Bukti/' + req.params.folderName + '/' + req.params.nomor_sppd + '.jpeg'))
+    res.download('public/data/Bukti/' + req.params.folderName + '/' + req.params.nomor_sppd + '.jpeg')
     else if (fs.existsSync('public/data/Bukti/' + req.params.folderName + '/' + req.params.nomor_sppd + '.jpg'))
-        res.download('public/data/Bukti/' + req.params.folderName + '/' + req.params.nomor_sppd + '.jpg')
-    else 
-        console.log('error happen')    
+    res.download('public/data/Bukti/' + req.params.folderName + '/' + req.params.nomor_sppd + '.jpg')
+    else
+    console.log('error happen')
+})
+
+//route get buat hapus
+app.get('/delete/sppd/:gu/:nomor_sppd', async (req, res) => {
+    await Sppd.deleteOne({
+        nomor_sppd: req.params.nomor_sppd
+    })
+    fs.unlinkSync('public/data/sppd/' + req.params.nomor_sppd + '.docx')
+    res.redirect('/sppd/' + req.params.gu)
+})
+
+app.get('/delete/kwitansi/:gu/:nomor_kwitansi', async (req, res) => {
+    await Kwitansi.deleteOne({
+        nomor_kwitansi: req.params.nomor_kwitansi
+    })
+    fs.unlinkSync('public/data/kwitansi/' + req.params.nomor_kwitansi + '.docx')
+    res.redirect('/kwitansi/' + req.params.gu)
 })
 
 //route get buat logout
@@ -588,7 +749,7 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 })
 
-//route get buat menampilkan login
+// route get buat menampilkan login
 app.get('/login', (req, res) => {
     if(typeof req.session.nip !== 'undefined') 
         res.redirect('/')
@@ -599,7 +760,7 @@ app.get('/login', (req, res) => {
         })
 })
 
-//route post buat proses data login
+// route post buat proses data login
 app.post('/login', [
     body('nip')
         .notEmpty().withMessage('NIP must not be empty').bail()
@@ -628,12 +789,6 @@ app.post('/login', [
         req.session.nip = req.body.nip
         res.redirect('/')
     }
-})
-
-app.get('/coba', async(req, res) => {
-    const employee = await Employee.find({pin : 123456})
-
-    res.send(employee)
 })
 
 //midlleware buat menampilkan status 404

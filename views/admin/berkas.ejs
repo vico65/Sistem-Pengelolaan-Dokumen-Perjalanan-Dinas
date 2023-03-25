@@ -51,27 +51,26 @@
       <nav id="sidebar"
          class="bg-coklat3 top-14 z-10  dark:bg-slate-900 w-2/5 sm:w-52 shadow-xl h-screen fixed sm:ml-0 transition-all duration-200 -ml-96 ">
 
-
          <div class="font-montserrat">
             <h3 class="font-bold text-lg px-2 pt-4 ">Menu</h3>
 
             <ul class="text-left text-black dark:text-slate-400 font-normal leading-7 text-sm mt-2 ">
                <li 
                   class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4 ">
-                  <a href="/"><i class="bi bi-house-door"></i> Halaman Depan</a>
+                  <a href="/" class="inline-block w-full"><i class="bi bi-house-door"></i> Halaman Depan</a>
 
                </li>
                <li  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4 ">
-                  <a href="/sppd"><i class="bi bi-file-earmark-text"></i> SPPD</a>
+                  <a href="/sppd" class="inline-block w-full"><i class="bi bi-file-earmark-text"></i> SPPD</a>
                </li>
 
                <li 
                   class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
-                  <i class="bi bi-envelope-paper"></i> <a href="/kwitansi">Kwitansi</a>
+                   <a href="/kwitansi"  class="inline-block w-full"><i class="bi bi-envelope-paper"></i> Kwitansi</a>
                </li>
 
                <li 
-                  class="text-coklat4 font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4">
+                  class="text-coklat2 font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4">
                   <i class="bi bi-envelope-paper-fill"></i> Berkas Perjadin
                </li>
                <li id="pointer-log-out"
@@ -81,10 +80,6 @@
                </li>
             </ul>
 
-         </div>
-
-         <div class="text-center text-[9px] dark:text-gray-500 text-gray-400 absolute bottom-3 px-3">
-            <p>DPRD Provinsi Sumatera Selatan </p>
          </div>
       </nav>
 
@@ -116,7 +111,7 @@
                            <td><%= employees[i] %></td>
                            <td>
                               <button type="button"
-                              class="px-2 py-1 mx-auto bg-green-700 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-green-500 "> <a href="/berkas/<%= sppd.nomor_sppd %>" ><i class="bi bi-folder2-open"></i> Detail</a> </button>
+                              class="px-2 py-1 mx-auto bg-coklat2 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-coklat2/80 "> <a href="/detail/<%= sppd.nomor_sppd %>" ><i class="bi bi-folder2-open"></i> Detail</a> </button>
                            </td>
                         </tr>
                         <% i++ %>

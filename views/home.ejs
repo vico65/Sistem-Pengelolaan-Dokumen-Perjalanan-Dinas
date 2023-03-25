@@ -54,20 +54,28 @@
             <h3 class="font-bold text-lg px-2 pt-4 ">Menu</h3>
 
             <ul class="text-left text-black dark:text-slate-400 font-normal leading-7 text-sm mt-2 ">
-               <li id="" class="text-coklat2 font-semibold dark:hover:bg-sky-900  dark:hover:text-slate-300  pl-4 ">
-                  <i class="bi bi-house-door-fill"></i> Halaman Depan
+               <li class="pl-4 font-semibold text-coklat2">
+                  <a href="/" class="inline-block w-full"><i class="bi bi-house-door-fill"></i> Halaman Depan</a>
                </li>
-               <li id="pointer-log-out"
-                  class="hover:text-white hover:bg-coklat1 dark:hover:bg-sky-900 dark:hover:text-slate-300  hover:py-1 pl-4">
-                  <a href="/logout"><i class="bi bi-box-arrow-in-right"></i> Log Out</a>
 
+               <% if (type == 'admin') { %>
+               <li class="hover:text-white hover:bg-coklat1  hover:py-1 pl-4 ">
+                  <a href="/sppd" class="inline-block w-full"><i class="bi bi-file-earmark-text"></i> SPPD</a>
+               </li>
+
+               <li class="hover:text-white hover:bg-coklat1  hover:py-1 pl-4">
+                  <a href="/kwitansi" class="inline-block w-full"><i class="bi bi-envelope-paper"></i> Kwitansi</a>
+               </li>
+
+               <li class="hover:text-white hover:bg-coklat1  hover:py-1 pl-4">
+                  <a href="/berkas" class="inline-block w-full"><i class="bi bi-envelope-paper"></i> Berkas Perjadin</a>
+               </li>
+               <% } %>
+
+               <li id="pointer-log-out" class="hover:text-white hover:bg-coklat1  hover:py-1 pl-4">
+                  <a href="/logout" class="inline-block w-full"><i class="bi bi-box-arrow-in-right"></i> Log Out</a>
                </li>
             </ul>
-
-         </div>
-
-         <div class="text-center text-[9px] dark:text-gray-500 text-gray-400 absolute bottom-3 px-3">
-            <p>DPRD Provinsi Sumatera Selatan </p>
          </div>
       </nav>
 
@@ -77,84 +85,63 @@
          <section class="bg-white px-3 py-3 w-[80%] shadow-lg">
             <div class="mb-2 w-full">
                <h3 class="font-inter font-semibold text-sm sm:text-base mb-3 text-red-900 dark:text-sky-700">
-                  Tabel Bukti</h3>
+                  Tabel Pengajuan Perjadin </h3>
 
                <div class="container-tabel ">
+                  <% if (sppds.length != 0) { %>
                   <table
                      class="border-collapse text-center table-auto sm:text-sm text-xs text-slate-700 dark:text-slate-400 font-nunito  mb-2  w-full border border-slate-300 shadow-md">
-                     <table
-                     class="border-collapse text-center table-auto sm:text-sm text-xs text-slate-700 dark:text-slate-400 font-nunito  mb-2  w-full border border-slate-500">
                      <thead class="bg-kuning1 text-white border ">
                         <tr>
-                           <td class="px-2 py-2 font-bold border-r border-l border-t border-slate-900">No.</td>
-                           <td class="font-bold border-r border-l border-t border-slate-900">No. SPPD</td>
-                           <td class="font-bold border-r border-l border-t border-slate-900">Status SPPD</td>
-                           <td class="font-bold pl-2 border-r border-l border-t border-slate-900">Aksi</td>
+                           <td class="px-2 py-2 font-bold border-r border-l border-t border-slate-300">No.</td>
+                           <td class="font-bold border-r border-l border-t border-slate-300">Nomor Sppd</td>
+                           <td class="font-bold border-r border-l border-t border-slate-300">Sppd</td>
+                           <td class="font-bold border-r border-l border-t border-slate-300">Kwitansi</td>
+                           <td class="font-bold border-r border-l border-t border-slate-300">Aksi</td>
                         </tr>
                      </thead>
 
-                     <tbody class="container-baris-sppd">
-                        <% i = 1 %>
-                        <% sppds.forEach(sppd => { %>
-                        <% if (i % 2 == 1) { %>
-                        <tr class="baris-sppd">
-                           <% } else { %>
-                        <tr class="bg-yellow-50 baris-sppd">
-                           <% } %>
-                           <td class="border-r border-l border-slate-900 py-1"><%= i %></td>
-                           <td class="border-r border-l border-slate-900"><%= sppd.nomor_sppd %></td>
-                           <td class="border-r border-l border-slate-900"><%= employeeNames[i - 1] %></td>
-                           <td class="border-r border-l border-slate-900"><%= sppd.nip %></td>
-                           <td class="border-r border-l border-slate-900 ">
-                              <button type="button"
-                              class="px-2 py-1 mx-auto bg-green-700 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-green-500 "> <a href="/download/sppd/<%= sppd.nomor_sppd %>" ><i class="bi bi-download"></i> Download</a> </button>
-                              <button type="button"
-                              class="px-2 py-1 mx-auto bg-red-700 rounded-md shadow-md text-white font-inter font-normal text-sm mb-3 hover:bg-red-500 "> <a href="/delete/sppd/<%= gu %>/<%= sppd.nomor_sppd %>" ><i
-                                 class="bi bi-trash-fill"></i> Hapus</a> </button>
+                     <tbody>
+                        <% i = 0 %>
+                        <% sppds.forEach((sppd) => { %>
+                        <tr>
+
+                           <td class="border-r border-l border-slate-300 py-1"><%= i + 1 %></td>
+                           <td class="border-r border-l border-slate-300 py-1"><%= sppd.nomor_sppd %></td>
+                           <td class="border-r border-l border-slate-300 py-1">
+                              <p class="text-green-600 font-bold">ada</p>
                            </td>
+                           <td class="border-r border-l border-slate-300 py-1">
+                              <% if (kwitansis[i] !== null) { %>
+                              <p class="text-green-600 font-bold">ada</p>
+                              <% } else { %>
+                              <p class="text-red-600 font-bold">-</p>
+                              <% } %>
+                           </td>
+                           <td class="border-r border-l border-slate-300 py-1">
+                              <a href="/detail/<%= sppd.nomor_sppd %>"
+                                 class="py-1 px-2 bg-coklat2 text-white rounded-md hover:bg-yellow-700">Detail</a>
+                           </td>
+
                         </tr>
-                        <% i++ %>
+                        <% i++  %>
                         <% }) %>
                      </tbody>
-                  </table>
 
 
                   </table>
+                  <% } else { %>
+                     <div class="w-fit bg-yellow-100 p-2 mb-3 mt-3 text-yellow-600 text-sm shadow-md">
+                        <div class="font-medium flex flex-row gap-2">
+                           <p><i class="bi bi-exclamation-triangle-fill"></i>
+                           Data kosong, anda mungkin belum pernah mengajukan sppd</p>
+                        </div>
+                     </div>
+                  <% } %>
                </div>
-
-
-
-               <div class="grid grid-cols-2">
-
-                  <div>
-
-                     <h3 class="font-inter font-semibold text-sm sm:text-base mb-3 text-red-900 dark:text-sky-700">
-                        Data Berkas</h3>
-
-                     <table class="text-sm font-nunito  font-semibold">
-                        <!--  -->
-                     </table>
-
-
-                  </div>
-
-                  <div>
-                     <h3 class="font-inter font-semibold text-sm sm:text-base mb-3 text-red-900 dark:text-sky-700">
-                        Download Berkas</h3>
-
-                     <table class="text-sm font-nunito  font-semibold">
-
-                     </table>
-                  </div>
-
-               </div>
-
          </section>
       </main>
    </div>
 </body>
-
-<script>
-</script>
 
 </html>
