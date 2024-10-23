@@ -21,11 +21,11 @@ Halaman depan website bagi admin
 ![Tampilan halaman depan admin](/Image/halaman_depan.png)
 
 Halaman detail dokumen perjalanan dinas
-![Tampilan halaman detail dokumen perjalanan dinas ](/image/halaman_detail_berkas.png)
+![Tampilan halaman detail dokumen perjalanan dinas ](/Image/halaman_detail_berkas.png)
 
 Halaman membuat data SPPD 
-![Tampilan halaman membuat data SPPD](/image/halaman_membuat_sppd.png)
+![Tampilan halaman membuat data SPPD](/Image/halaman_membuat_sppd.png)
 
 Halaman upload dokumen perjalanan dinas
-![Tampilan halaman upload dokumen](/image/halaman_upload_dokumen.png)
+![Tampilan halaman upload dokumen](/Image/halaman_upload_dokumen.png)
 
