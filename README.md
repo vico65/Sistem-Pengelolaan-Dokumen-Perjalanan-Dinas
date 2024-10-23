@@ -7,3 +7,19 @@ tersebut. Website ini dikembangkan dengan HTML, CSS menggunakan framework Tailwi
 - Membuat file word dokumen perjalanan dinas SPPD dan Kwitansi secara otomatis
 - Halaman yang berbeda bagi admin dan non-admin
 - Upload dokumen perjalanan dinas
+
+## Screenshot
+Berikut adalah beberapa tampilan dari aplikasi:
+
+Halaman Depan dengan Light Mode
+![Tampilan halaman depan dengan light mode](/image/halaman_depan_light_mode.png)
+
+Halaman depan dengan Dark Mode
+![Tampilan halaman depan dengan dark mode](/image/halaman_depan_dark_mode.png)
+
+Halaman data pribadi mahasiswa
+![Tampilan halaman data_pribadi_mahasiswa](/image/halaman_data_pribadi_mhs.png)
+
+Halaman krs mahasiswa
+![Tampilan halaman krs](/image/halaman_krs.png)
+
